@@ -55,22 +55,24 @@ DUR = sum(b - a for a, b in KEEP)
 
 # ----------------------------------------------------------------- camera ---
 # (src_start, zoom_from, zoom_to, roi_x, roi_y) - each row is a "shot".
-# A new row = whip-zoom transition + whoosh.
+# A new row = whip-zoom transition + whoosh. Zoom stays <= MAX_ZOOM so the whole
+# card width (x 49..1031 in the raw frame) is always on screen.
+MAX_ZOOM = 1.075
 SHOTS = [
-    (0.00, 1.38, 1.30, 540, 360),    # hook: title being written (twist-in)
-    (1.25, 1.24, 1.32, 540, 420),    # title + subtitle
-    (3.73, 1.90, 2.02, 330, 790),    # sensor box being drawn
-    (5.30, 1.30, 1.38, 540, 740),    # wall drawn (box + wall in frame)
-    (8.57, 1.80, 1.92, 700, 600),    # 20 cm arrow
-    (10.20, 1.36, 1.44, 560, 760),   # waves going out
-    (12.10, 1.22, 1.30, 540, 820),   # full diagram, echo coming back
-    (14.23, 1.22, 1.30, 540, 1185),  # "Sensor ne naapa = 40 cm"
-    (16.30, 1.12, 1.18, 540, 920),   # punch-out: 20 cm drawing vs 40 cm reading
-    (18.80, 1.22, 1.28, 540, 1322),  # "par deewar sirf 20 cm pe hai!"
-    (20.10, 1.30, 1.37, 540, 1416),  # formula
-    (22.30, 2.40, 2.58, 800, 1416),  # slam into the ÷2
-    (23.37, 1.42, 1.50, 490, 1529),  # "wave DO BAAR chali!"
-    (24.63, 1.42, 1.52, 540, 1640),  # push onto the Follow CTA
+    (0.00, 1.07, 1.03, 540, 360),    # hook: title being written (twist-in)
+    (1.25, 1.00, 1.05, 540, 400),    # title + subtitle
+    (3.73, 1.07, 1.04, 540, 790),    # sensor box being drawn
+    (5.30, 1.01, 1.06, 540, 740),    # wall drawn
+    (8.57, 1.07, 1.03, 540, 600),    # 20 cm arrow
+    (10.20, 1.00, 1.05, 540, 760),   # waves going out
+    (12.10, 1.06, 1.02, 540, 820),   # echo coming back
+    (14.23, 1.00, 1.06, 540, 1185),  # "Sensor ne naapa = 40 cm"
+    (16.30, 1.07, 1.03, 540, 920),   # 40 cm hit
+    (18.80, 1.00, 1.05, 540, 1322),  # "par deewar sirf 20 cm pe hai!"
+    (20.10, 1.06, 1.02, 540, 1416),  # formula
+    (22.30, 1.07, 1.07, 540, 1416),  # punch on the ÷2
+    (23.37, 1.02, 1.06, 540, 1529),  # "wave DO BAAR chali!"
+    (24.63, 1.00, 1.05, 540, 300),   # full card + Follow CTA
 ]
 
 # --------------------------------------------------------------- captions ---
@@ -87,21 +89,21 @@ CAPTIONS = [
     (10.20, 12.10, [[("SOUND", Wh, 0.9)], [("WAVE", B, 1.3)]], "🔊"),
     (12.10, 14.03, [[("ECHO", R, 1.4)], [("WAPAS!", Wh, 0.9)]], None),
     (14.23, 16.30, [[("SENSOR NE", Wh, 0.95)], [("NAAPA", Y, 1.2)]], None),
-    (16.30, 18.60, [[("40 CM", R, 1.7)]], "😳"),
-    (18.80, 20.10, [[("PAR DEEWAR", Wh, 1.0)]], None),
-    (20.10, 21.20, [[("SIRF", Wh, 0.9)], [("20 CM!", Y, 1.4)]], None),
-    (21.20, 22.30, [[("TIME × 343", Wh, 1.0)]], "⏱️"),
-    (22.30, 23.37, [[("÷ 2", Y, 2.0)]], None),
-    (23.37, 24.47, [[("WAVE", Wh, 0.95), ("DO BAAR", R, 1.0)], [("CHALI!", Wh, 1.2)]], None, 1650),
-    (24.63, 26.20, [[("FOLLOW", Y, 1.2)]], None, 1490),
-    (26.20, 27.83, [[("ROZ 1", Wh, 0.8), ("IOT CONCEPT", B, 0.8)]], None, 1490),
+    (16.30, 18.60, [[("40 CM", R, 1.7)]], "😳", 1500),
+    (18.80, 20.10, [[("PAR DEEWAR", Wh, 1.0)]], None, 1560),
+    (20.10, 21.20, [[("SIRF", Wh, 0.9)], [("20 CM!", Y, 1.4)]], None, 1600),
+    (21.20, 22.30, [[("TIME × 343", Wh, 1.0)]], "⏱️", 1600),
+    (22.30, 23.37, [[("÷ 2", Y, 2.0)]], None, 1680),
+    (23.37, 24.47, [[("WAVE", Wh, 0.75), ("DO BAAR", R, 0.75), ("CHALI!", Wh, 0.75)]], None, 1740),
+    (24.63, 26.20, [[("FOLLOW", Y, 0.85)]], None, 95),
+    (26.20, 27.83, [[("ROZ 1", Wh, 0.75), ("IOT CONCEPT", B, 0.75)]], None, 95),
 ]
 
 # ------------------------------------------------------------- big FX hits ---
 SPEEDLINES = [(1.25, 0.50)]          # (src_t, dur) anime burst on the hook question
-SHOCKWAVES = [(22.30, 0.40)]         # ring of spikes around the ÷2
+SHOCKWAVES = [(22.30, 0.40, 1680)]   # (src_t, dur, y) ring of spikes around the ÷2
 FLASHES = [(16.30, 0.15), (24.63, 0.20)]
-SHAKES = [(16.30, 0.45, 26), (22.30, 0.35, 18), (23.37, 0.25, 10)]  # (t, dur, px)
+SHAKES = [(16.30, 0.45, 14), (22.30, 0.35, 12), (23.37, 0.25, 8)]  # (t, dur, px)
 BOOMS = [16.30, 22.30]
 DINGS = [22.30, 24.63]
 RISERS = [(15.40, 16.30)]
@@ -404,15 +406,15 @@ def camera_at(t, shots):
     TR_OUT, TR_IN = 0.10, 0.17
     if k + 1 < len(shots) and t > s1 - TR_OUT:          # whip out of this shot
         u = (t - (s1 - TR_OUT)) / TR_OUT
-        z *= 1 + 0.30 * u * u
+        z *= 1 + 0.15 * u * u
         blur = u
     if k > 0 and t - s0 < TR_IN:                          # settle into the new shot
         u = 1 - (t - s0) / TR_IN
-        z *= 1 + 0.28 * u * u
+        z *= 1 + 0.12 * u * u
         blur = max(blur, u)
     if k == 0 and t < 0.30:                               # twist-in hook
         u = 1 - t / 0.30
-        z *= 1 + 0.9 * u * u
+        z *= 1 + 0.5 * u * u
         blur = max(blur, u)
         twist = 28 * u * u
     return z, cx, cy, blur, twist
@@ -471,7 +473,7 @@ def build_video():
         img = render_caption(lines)
         caps.append((out_t(t0), out_t(t1), img, render_emoji(emo) if emo else None, y[0] if y else CAPTION_Y))
     sl = [(out_t(t), d) for t, d in SPEEDLINES]
-    sw = [(out_t(t), d) for t, d in SHOCKWAVES]
+    sw = [(out_t(t), d, y) for t, d, y in SHOCKWAVES]
     fl = [(out_t(t), d) for t, d in FLASHES]
     sh = [(out_t(t), d, a) for t, d, a in SHAKES]
 
@@ -497,7 +499,7 @@ def build_video():
         # beat bump on every caption change
         for c0, *_ in caps:
             if 0 <= t - c0 < 0.18:
-                z *= 1 + 0.045 * (1 - (t - c0) / 0.18)
+                z = max(z, min(z * (1 + 0.03 * (1 - (t - c0) / 0.18)), MAX_ZOOM))
         dx = dy = 0.0
         for t0, d, amp in sh:
             if 0 <= t - t0 < d:
@@ -517,9 +519,9 @@ def build_video():
         for t0, d in sl:
             if 0 <= t - t0 < d:
                 speedlines(frame, t - t0, d, W / 2, CAPTION_Y - 40, i // 2)
-        for t0, d in sw:
+        for t0, d, y in sw:
             if 0 <= t - t0 < d:
-                shockwave(frame, t - t0, d, W / 2, CAPTION_Y)
+                shockwave(frame, t - t0, d, W / 2, y)
 
         for c0, c1, img, emo, cy_cap in caps:
             if c0 <= t < c1:
