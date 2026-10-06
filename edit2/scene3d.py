@@ -365,7 +365,7 @@ def build_dial(name, loc, label, col_label):
     cap = cyl(name + "cap", 0.09, 0.06, loc + Vector((0, -0.1, 0)), emit(name + "capm", (1, 1, 1), 2), rot=rot)
     lbls = {}
     for key, txt, col in label:
-        lbls[key] = text(name + key, txt, 0.42, loc + Vector((0, -0.05, -1.2)), [emit(name + key + "m", col, 4)], extrude=0.05)
+        lbls[key] = text(name + key, txt, 0.42, loc + Vector((0, -0.05, -1.2)), [emit(name + key + "m", col, 4)], extrude=0.012)
     parts = [d, ring, needle, cap] + ticks
     return parts, pivot, lbls
 
@@ -451,7 +451,7 @@ def build(sc):
     for o in (hook, big):
         show(o, [(S[0], S[1])])
     pop(big, 6, over=1.25)
-    q = text("hookq", "?", 2.0, HOOK + Vector((3.4, 0.4, 0.3)), [emit("q", (1, 0.85, 0.1), 5)], extrude=0.25,
+    q = text("hookq", "?", 2.0, HOOK + Vector((3.4, 0.4, 0.3)), [pbr("qm", (0.9, 0.7, 0.02), rough=0.25, metal=0.3, em=(1, 0.85, 0.1), ems=0.35)], extrude=0.25,
              rot=(math.radians(90), 0, math.radians(-12)))
     show(q, [(22, S[1])])
     pop(q, 22, over=1.4)
@@ -466,8 +466,8 @@ def build(sc):
         gm.default_value = v
         gm.keyframe_insert("default_value", frame=f)
 
-    tx = text("tx", "TX", 0.42, ARD + Vector((1.45, -0.6, 1.0)), [emit("txm", (0.25, 0.6, 1.0), 5)])
-    rx = text("rx", "RX", 0.42, LAP + Vector((-1.55, -0.9, 1.0)), [emit("rxm", (0.25, 0.6, 1.0), 5)])
+    tx = text("tx", "TX", 0.42, ARD + Vector((1.45, -0.6, 1.0)), [emit("txm", (0.25, 0.6, 1.0), 5)], extrude=0.012)
+    rx = text("rx", "RX", 0.42, LAP + Vector((-1.55, -0.9, 1.0)), [emit("rxm", (0.25, 0.6, 1.0), 5)], extrude=0.012)
     for o, f in ((tx, S[1] + 25), (rx, S[1] + 35)):
         show(o, [(f, S[3])])
         pop(o, f)
@@ -476,8 +476,8 @@ def build(sc):
 
     yel = emit("yel", (1.0, 0.85, 0.1), 6)
     wht = emit("wht", (1, 1, 1), 3)
-    bps = text("bps", "9600", 0.95, Vector((0.2, -0.6, 2.35)), [yel], extrude=0.12)
-    bps2 = text("bps2", "bits / second", 0.42, Vector((0.2, -0.6, 1.7)), [wht], extrude=0.06)
+    bps = text("bps", "9600", 0.95, Vector((0.2, -0.6, 2.35)), [yel], extrude=0.02)
+    bps2 = text("bps2", "bits / second", 0.42, Vector((0.2, -0.6, 1.7)), [wht], extrude=0.012)
     for o, f in ((bps, S[2] + 32), (bps2, S[2] + 38)):
         show(o, [(f, S[3])])
         pop(o, f)
@@ -536,7 +536,7 @@ def build(sc):
     for o in xparts:
         show(o, [(S[3] + 38, S[4])])
     pop(xr, S[3] + 38)
-    cw = text("clockwire", "CLOCK WIRE", 0.34, DIAL_A.lerp(DIAL_L, 0.5) + Vector((0, 0, 0.8)), [emit("cwm", (0.8, 0.85, 1), 3)])
+    cw = text("clockwire", "CLOCK WIRE", 0.34, DIAL_A.lerp(DIAL_L, 0.5) + Vector((0, 0, 0.8)), [emit("cwm", (0.8, 0.85, 1), 3)], extrude=0.01)
     show(cw, [(S[3] + 30, S[4])])
     pop(cw, S[3] + 30)
 
@@ -558,7 +558,7 @@ def build(sc):
         show(o, [(S[6] + 85, S[8])])
     pop(tk, S[6] + 85, over=1.35)
 
-    same = text("same", "SAME NUMBER!", 0.72, Vector((0.1, 0.2, 4.75)), [yel], extrude=0.12)
+    same = text("same", "SAME NUMBER!", 0.72, Vector((0.1, 0.2, 4.75)), [yel], extrude=0.02)
     show(same, [(S[7] + 6, S[8])])
     pop(same, S[7] + 6)
     for o in (la["l"], ll["ok"]):
@@ -604,6 +604,7 @@ def setup_render(sc, preview):
     sc.render.use_motion_blur = True
     sc.render.motion_blur_shutter = 0.5
     sc.render.use_persistent_data = True
+    sc.render.use_overwrite = False  # resume: skip frames already on disk
     sc.render.image_settings.file_format = "PNG"
     sc.render.filepath = os.path.join(FRAMES, "")
     sc.view_settings.view_transform = "Standard"
