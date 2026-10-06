@@ -290,8 +290,8 @@ def build_video():
     enc = subprocess.Popen(["ffmpeg", "-v", "error", "-y", "-f", "rawvideo", "-pix_fmt", "rgb24",
                             "-s", f"{W}x{H}", "-r", str(FPS), "-i", "pipe:",
                             "-i", os.path.join(WORK, "mix.wav"),
-                            "-c:v", "libx264", "-preset", "slow", "-crf", "17", "-pix_fmt", "yuv420p",
-                            "-c:a", "aac", "-b:a", "192k", "-movflags", "+faststart", "-shortest", OUT],
+                            "-c:v", "libx264", "-preset", "slow", "-crf", "19", "-maxrate", "9M", "-bufsize", "18M",
+                            "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "192k", "-movflags", "+faststart", "-shortest", OUT],
                            stdin=subprocess.PIPE)
     rng = np.random.default_rng(1)
     WIPE = 12
