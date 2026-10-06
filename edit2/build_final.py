@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Final assembly for the Serial.begin(9600) short.
 
-1. tighten the user's voiceover (one long breath pause removed)
+1. use the cleaned, pause-tightened voiceover from prep_voice.py
 2. synthesise a cinematic tech music bed + SFX synced to the 3D shots
 3. composite the Blender frames: upscale to 1080x1920, bloom, grade, vignette,
    grain, the reference-style title card, a diagonal split-wipe, whip-blur cuts,
@@ -23,17 +23,18 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(HERE, "..", "edit"))
 import build_edit as fx  # noqa: E402  (reuse synth + sfx helpers from the first edit)
 
-SRC = os.path.join(HERE, "..", "SerialBegin.mp4")
 WORK = os.path.join(HERE, "work")
 FRAMES = os.path.join(WORK, "frames")
 OUT = os.path.join(HERE, "output", "SerialBegin-3D-EDIT.mp4")
 W, H, FPS, SR = 1080, 1920, 30, 48000
 TITLE_FONT = "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf"
 
-KEEP = [(3 / 30, 453 / 30), (472 / 30, 27.0)]  # drop the 0.64 s breath at 15.1 s
-DUR = sum(b - a for a, b in KEEP)
-N_FRAMES = round(DUR * FPS)
-S = [0, 87, 183, 273, 366, 450, 530, 638, 704]  # shot starts (frames), same as scene3d.py
+# Voice + shot timing come from prep_voice.py (cleaned, pause-tightened voiceover).
+import json  # noqa: E402
+_T = json.load(open(os.path.join(WORK, "timing.json")))
+S = _T["shots"]            # shot starts (frames), same as scene3d.py
+N_FRAMES = _T["end"]
+DUR = N_FRAMES / FPS
 
 
 def t(f):
@@ -41,17 +42,6 @@ def t(f):
 
 
 # ================================================================== audio
-def tighten_voice():
-    parts, cat = [], ""
-    for i, (a, b) in enumerate(KEEP):
-        parts.append(f"[0:a]atrim=start={a}:end={b},asetpts=PTS-STARTPTS,"
-                     f"afade=t=in:d=0.01,afade=t=out:st={b - a - 0.01:.3f}:d=0.01[a{i}]")
-        cat += f"[a{i}]"
-    parts.append(f"{cat}concat=n={len(KEEP)}:v=0:a=1[a]")
-    fx.run(["ffmpeg", "-v", "error", "-y", "-i", SRC, "-filter_complex", ";".join(parts),
-            "-map", "[a]", "-ac", "1", "-ar", str(SR), os.path.join(WORK, "voice.wav")])
-
-
 def pad_chord(freqs, dur):
     n = int(dur * SR)
     tt = np.arange(n) / SR
@@ -152,9 +142,10 @@ def sfx_track(total):
     P(buf, fx.pop(), t(22), 0.5)
     for f in (S[1] + 25, S[1] + 35):                             # TX / RX
         P(buf, fx.pop(), t(f), 0.45)
-    pattern = "10110010011010110"
+    pattern = "10110010011010110" * 2
     for i, ch in enumerate(pattern):                             # data blips as bits launch
-        P(buf, blip(1500 if ch == "1" else 950), t(S[1] + 60 + i * 7), 0.55)
+        if S[2] - 40 + i * 6 < S[3]:
+            P(buf, blip(1500 if ch == "1" else 950), t(S[2] - 40 + i * 6), 0.45)
     P(buf, fx.pop(), t(S[2] + 32), 0.5)
     P(buf, fx.ding(), t(S[2] + 32), 0.35)
     P(buf, fx.pop(), t(S[2] + 38), 0.4)
@@ -169,10 +160,10 @@ def sfx_track(total):
         P(buf, glitch(i), t(f), 0.6)
     P(buf, buzzer(), t(S[5] + 3), 0.7)                           # mismatch!
     P(buf, fx.boom(), t(S[5] + 3), 0.85)
-    P(buf, fx.pop(), t(S[6] + 22), 0.45)                         # dial label flips to 9600
-    for i, f in enumerate(range(S[6] + 45, S[6] + 80, 3)):      # typing "Hello World!"
+    P(buf, fx.pop(), t(S[6] + 30), 0.45)                         # dial label flips to 9600
+    for i, f in enumerate(range(S[6] + 60, S[6] + 104, 4)):      # typing "Hello World!"
         P(buf, key_click(i), t(f), 0.45)
-    P(buf, chime(), t(S[6] + 85), 0.6)                           # tick
+    P(buf, chime(), t(S[6] + 115), 0.6)                           # tick
     P(buf, fx.riser(1.0), t(S[7]) - 1.0, 0.35)
     P(buf, fx.boom()[: int(0.6 * SR)], t(S[7] + 6), 0.5)
     P(buf, fx.pop(), t(S[7] + 6), 0.5)
@@ -181,7 +172,6 @@ def sfx_track(total):
 
 
 def build_audio():
-    tighten_voice()
     total = DUR + 0.05
     fx.write_wav(os.path.join(WORK, "music.wav"), music(total))
     fx.write_wav(os.path.join(WORK, "sfx.wav"), sfx_track(total) * 0.9)

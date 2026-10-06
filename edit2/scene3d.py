@@ -26,6 +26,11 @@ FPS = 30
 END = 788
 # shot starts (output frames): hook, devices, bits, no-clock, mismatch, X, fix, same, cta
 SHOT_FRAMES = [0, 87, 183, 273, 366, 450, 530, 638, 704]
+_TIMING = os.path.join(HERE, "work", "timing.json")
+if os.path.exists(_TIMING):  # timing derived from the voiceover by prep_voice.py
+    import json
+    _t = json.load(open(_TIMING))
+    SHOT_FRAMES, END = _t["shots"], _t["end"]
 
 ARD = Vector((-2.4, 0.0, 0.0))
 LAP = Vector((2.6, 0.5, 0.0))
@@ -311,7 +316,7 @@ def build_bits(path, start, end):
     blue = emit("bit1", (0.02, 0.2, 1.0), 6)
     red = emit("bit0", (1.0, 0.03, 0.05), 6)
     white = emit("bitw", (1, 1, 1), 3)
-    pattern = "10110010011010110"
+    pattern = "10110010011010110" * 2
     bits = []
     interp("LINEAR")
     for i, ch in enumerate(pattern):
@@ -328,7 +333,7 @@ def build_bits(path, start, end):
         c.forward_axis = "FORWARD_X"
         t = text(f"bt{i}", ch, 0.3, (0, -0.18, 0.0), [white], extrude=0.01)
         t.parent = b
-        launch = start + i * 7
+        launch = start + i * 6
         c.offset_factor = 0.0
         c.keyframe_insert("offset_factor", frame=launch)
         c.offset_factor = 1.0
@@ -462,7 +467,7 @@ def build(sc):
     cable, glow = build_cable()
     interp("BEZIER")
     gm = glow.data.materials[0].node_tree.nodes["Emission"].inputs["Strength"]
-    for f, v in [(S[2], 0.0), (S[2] + 10, 3.0), (S[3], 3.0), (S[3] + 12, 0.0), (S[6] + 40, 0.0), (S[6] + 50, 3.0)]:
+    for f, v in [(S[2], 0.0), (S[2] + 10, 3.0), (S[3], 3.0), (S[3] + 12, 0.0), (S[6] + 70, 0.0), (S[6] + 80, 3.0)]:
         gm.default_value = v
         gm.keyframe_insert("default_value", frame=f)
 
@@ -472,7 +477,7 @@ def build(sc):
         show(o, [(f, S[3])])
         pop(o, f)
 
-    build_bits(cable, S[1] + 60, S[3] + 20)
+    build_bits(cable, S[2] - 40, S[3] + 20)
 
     yel = emit("yel", (1.0, 0.85, 0.1), 6)
     wht = emit("wht", (1, 1, 1), 3)
@@ -489,10 +494,10 @@ def build(sc):
         show(o, [(S[3], END)])
     for o in da + dl:
         pass
-    show(ll["ok"], [(S[3], S[4]), (S[6] + 22, END)])
-    show(ll["bad"], [(S[4], S[6] + 22)])
+    show(ll["ok"], [(S[3], S[4]), (S[6] + 30, END)])
+    show(ll["bad"], [(S[4], S[6] + 30)])
     pop(ll["bad"], S[4])
-    pop(ll["ok"], S[6] + 22)
+    pop(ll["ok"], S[6] + 30)
     pop(da[0], S[3])
     pop(dl[0], S[3] + 4)
 
@@ -505,11 +510,11 @@ def build(sc):
     for f in (0, S[4]):
         pl.rotation_euler = (0, -w * f, 0)
         pl.keyframe_insert("rotation_euler", frame=f)
-    fast_end = S[6] + 20
+    fast_end = S[6] + 30
     a_fast = -w * S[4] + (-w * 8) * (fast_end - S[4])
     pl.rotation_euler = (0, a_fast, 0)
     pl.keyframe_insert("rotation_euler", frame=fast_end)
-    sync = S[6] + 50
+    sync = S[6] + 80
     target = -w * sync
     while target < a_fast + 2.5:
         target += 2 * math.pi
@@ -542,9 +547,9 @@ def build(sc):
 
     # --- laptop screens
     sched = [("idle", 0, S[4]), ("bad0", S[4], S[4] + 18), ("bad1", S[4] + 18, S[4] + 38),
-             ("bad2", S[4] + 38, S[4] + 58), ("bad3", S[4] + 58, S[6] + 20),
-             ("good0", S[6] + 20, S[6] + 45), ("good1", S[6] + 45, S[6] + 60),
-             ("good2", S[6] + 60, S[6] + 75), ("good3", S[6] + 75, S[8]), ("cta", S[8], END)]
+             ("bad2", S[4] + 38, S[4] + 58), ("bad3", S[4] + 58, S[6] + 30),
+             ("good0", S[6] + 30, S[6] + 60), ("good1", S[6] + 60, S[6] + 80),
+             ("good2", S[6] + 80, S[6] + 100), ("good3", S[6] + 100, S[8]), ("cta", S[8], END)]
     for name, a, b in sched:
         show(screens[name], [(a, b)])
 
@@ -555,8 +560,8 @@ def build(sc):
     pop(bx, S[5] + 3, over=1.35)
     tk, tkp = build_tick("tick", LAP + Vector((1.1, -1.2, 1.5)), 1.0, (0.05, 1.0, 0.2))
     for o in tkp:
-        show(o, [(S[6] + 85, S[8])])
-    pop(tk, S[6] + 85, over=1.35)
+        show(o, [(S[6] + 115, S[8])])
+    pop(tk, S[6] + 115, over=1.35)
 
     same = text("same", "SAME NUMBER!", 0.72, Vector((0.1, 0.2, 4.75)), [yel], extrude=0.02)
     show(same, [(S[7] + 6, S[8])])
@@ -584,7 +589,7 @@ def build(sc):
                       (S[6], Vector((2.1, -5.6, 1.9)), Vector((2.5, 0.4, 1.8)))], lens_keys=[(S[5], 30)],
                shake=(S[5] + 3, 14, 0.18)),
         camera("cG", [(S[6], Vector((1.2, -7.0, 2.8)), Vector((2.6, 0.5, 2.2))),
-                      (S[6] + 40, Vector((1.6, -6.0, 2.6)), Vector((2.6, 0.5, 2.3))),
+                      (S[6] + 120, Vector((1.6, -6.0, 2.6)), Vector((2.6, 0.5, 2.3))),
                       (S[7], Vector((2.3, -5.0, 2.0)), lap_scr)], lens_keys=[(S[6], 30)]),
         camera("cH", [(S[7], Vector((-3.8, -8.6, 2.8)), Vector((0.1, 0, 2.7))),
                       (S[8], Vector((3.6, -8.6, 3.6)), Vector((0.1, 0, 2.7)))], lens_keys=[(S[7], 26)]),
