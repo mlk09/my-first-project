@@ -206,10 +206,36 @@ def title_card():
     return np.array(im)
 
 
+# Fallback: shots not yet rendered at the voice timing are taken from the first
+# full render (frames_v1, original 26.3 s timing) and time-stretched per shot.
+FRAMES_V1 = os.path.join(WORK, "frames_v1")
+S_V1, END_V1 = [0, 87, 183, 273, 366, 450, 530, 638, 704], 788
+
+
+def _read(path):
+    return cv2.cvtColor(cv2.imread(path), cv2.COLOR_BGR2RGB)
+
+
+def _shot_complete(i):
+    end = S[i + 1] if i + 1 < len(S) else N_FRAMES
+    return all(os.path.exists(os.path.join(FRAMES, f"{f:04d}.png")) for f in (S[i], end - 1))
+
+
 def load(f):
     f = min(max(f, 0), N_FRAMES - 1)
-    im = cv2.imread(os.path.join(FRAMES, f"{f:04d}.png"))
-    im = cv2.cvtColor(im, cv2.COLOR_BGR2RGB)
+    i = max(k for k, s0 in enumerate(S) if s0 <= f)
+    if _shot_complete(i) or not os.path.isdir(FRAMES_V1):
+        im = _read(os.path.join(FRAMES, f"{f:04d}.png"))
+    else:
+        n_new = (S[i + 1] if i + 1 < len(S) else N_FRAMES) - S[i]
+        n_old = (S_V1[i + 1] if i + 1 < len(S_V1) else END_V1) - S_V1[i]
+        p = S_V1[i] + (f - S[i]) / n_new * n_old
+        a = int(np.floor(p))
+        b = min(a + 1, S_V1[i] + n_old - 1)
+        w = p - a
+        ia = _read(os.path.join(FRAMES_V1, f"{a:04d}.png")).astype(np.float32)
+        ib = _read(os.path.join(FRAMES_V1, f"{b:04d}.png")).astype(np.float32)
+        im = (ia * (1 - w) + ib * w).astype(np.uint8)
     return cv2.resize(im, (W, H), interpolation=cv2.INTER_CUBIC)
 
 
