@@ -34,11 +34,11 @@ CYAN, YEL, RED, GRN, WHT, INK = (60, 200, 255), (255, 200, 30), (240, 50, 50), (
 
 def pct(f):
     if f <= FILL0:
-        return 8.0
+        return 12.0
     if f >= FILL1:
         return 100.0
     u = (f - FILL0) / (FILL1 - FILL0)
-    return 8 + 92 * (1 - (1 - u) ** 1.6)
+    return 12 + 88 * (1 - (1 - u) ** 1.6)
 
 
 def shot_of(f):
