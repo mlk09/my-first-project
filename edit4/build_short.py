@@ -53,14 +53,14 @@ STEPS = {"A": ("ARDUINO", "Ghost Button?!", 34),
          "B": ("STEP-1", "FLOATING PIN", 8),
          "E": ("STEP-2", "INPUT_PULLUP", 8)}
 WHEELS = {"B": (["Random 0/1", "Bina chhue", "Confused pin"], 80),
-          "C": (["Kisi se connected nahi", "Hawa ki noise", "Random value"], 100),
+          "C": (["Kisi se juda nahi", "Hawa mein latka", "Kabhi 0, kabhi 1"], 100),
           "D": (["5V se joda", "Pull-up resistor", "STABLE"], 50)}
 # burned-in subtitles of the voiceover script: (start s, end s, text); CAPS words turn yellow
 SUBS = [(0.0, 2.0, "Button dabaya hi nahi…"), (2.0, 4.0, "phir bhi PRESSED?!"),
         (4.0, 8.0, "Serial Monitor dekho: 0, 1, 1, 0…"), (8.0, 10.3, "bina chhue RANDOM values!"),
         (10.3, 12.0, "Ise kehte hain FLOATING pin"),
-        (12.0, 16.5, "Button open = pin kisi se CONNECTED nahi"), (16.5, 19.5, "Hawa ki NOISE, aapki ungli…"),
-        (19.5, 22.0, "sab use 0 ya 1 bana dete hain"),
+        (12.0, 15.5, "Button nahi dabaya, toh pin kisi se JUDA hi nahi"), (15.5, 18.5, "Wo hawa mein LATKA hai…"),
+        (18.5, 22.0, "isliye kabhi 0, kabhi 1 padhta hai"),
         (22.0, 25.0, "Fix: pin ko 5V ki taraf kheencho"), (25.0, 27.0, "Yahi hai PULL-UP resistor!"),
         (27.0, 29.0, "Code mein bas likho:"), (29.0, 31.5, "pinMode(2, INPUT_PULLUP)"),
         (31.5, 34.0, "Bina dabaye HIGH, dabao toh LOW"),
