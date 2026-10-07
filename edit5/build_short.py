@@ -175,9 +175,10 @@ def load3d(f):
     im = cv2.resize(im, (W, H), interpolation=cv2.INTER_CUBIC)
     im = cv2.addWeighted(im, 1.25, cv2.GaussianBlur(im, (0, 0), 1.6), -0.25, 0)
     x = im.astype(np.float32) / 255                          # bloom on LEDs / OLED / pings
-    bright = x * np.clip((x.max(2, keepdims=True) - 0.7) / 0.3, 0, 1)
+    sat = x.max(2, keepdims=True) - x.min(2, keepdims=True)          # bloom only saturated lights, not white glass
+    bright = x * np.clip((x.max(2, keepdims=True) - 0.75) / 0.25, 0, 1) * np.clip(sat / 0.35, 0, 1)
     sm = cv2.resize(bright, (W // 4, H // 4), interpolation=cv2.INTER_AREA)
-    x += cv2.resize(cv2.GaussianBlur(sm, (0, 0), 8), (W, H)) * 0.5
+    x += cv2.resize(cv2.GaussianBlur(sm, (0, 0), 8), (W, H)) * 0.35
     return (np.clip(x, 0, 1) * 255).astype(np.uint8)
 
 
