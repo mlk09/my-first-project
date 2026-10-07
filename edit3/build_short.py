@@ -34,6 +34,16 @@ W, H, FPS, SR = 1080, 1920, 30, 48000
 N = 1200
 SEG = {"A": (0, 105), "B": (105, 315), "C": (315, 465), "D": (465, 675), "E": (675, 900), "F": (900, 1080), "G": (1080, 1200)}
 CLIPS = {"B": 249.0, "D": 530.0}          # source start seconds for the screen clips
+SEG3D = dict(SEG)                          # frame ranges as rendered by scene3d.py
+VOICE = False
+_VT = os.path.join(WORK, "vo_timing.json")
+if os.path.exists(_VT):                    # voiceover present: shots stretched to fit each line
+    import json
+    _t = json.load(open(_VT))
+    SEG = {k_: tuple(v) for k_, v in _t["seg"].items()}
+    N = _t["n"]
+    VOICE = True
+    OUT = os.path.join(HERE, "output", "millis-vs-delay-SHORT-VOICE.mp4")
 BOLD = "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf"
 MONT = os.path.join(HERE, "..", "edit", "assets", "fonts", "Montserrat-Black.ttf")
 MONO = "/usr/share/fonts/truetype/dejavu/DejaVuSansMono-Bold.ttf"
@@ -162,6 +172,7 @@ def sfx_track(total):
         for j in range(6):
             P(buf, click(), t(a + 4 + j * 2), 0.25)
     for seg, (words, every) in WHEELS.items():                        # keyword wheel steps
+        every = max(every, (SEG[seg][1] - SEG[seg][0]) // len(words))
         for i in range(1, len(words)):
             P(buf, sparkle(i + 7), t(SEG[seg][0] + i * every), 0.3)
     for f in range(SEG["C"][0], SEG["C"][1], 5):                      # millis counter racing
@@ -169,7 +180,8 @@ def sfx_track(total):
     for f in range(SEG["D"][0] + 10, SEG["D"][1], 30):                # delay: one tick per second
         P(buf, tick(False), t(f), 0.45)
     for j in range(3):                                                # delay cube hits the wall
-        P(buf, thud(), t(SEG["E"][0] + j * 70 + 55), 0.5)
+        k3 = (SEG["E"][1] - SEG["E"][0]) / (SEG3D["E"][1] - SEG3D["E"][0])
+        P(buf, thud(), t(SEG["E"][0] + (j * 70 + 55) * k3), 0.5)
     P(buf, soft_buzz(), t(SEG["F"][0] + 18), 0.6)                     # cross draws
     P(buf, chime(), t(SEG["F"][0] + 70), 0.6)                         # tick draws
     P(buf, fx.ding(), t(SEG["G"][0] + 6), 0.4)
@@ -181,12 +193,23 @@ def build_audio():
     total = N / FPS
     fx.write_wav(os.path.join(WORK, "music.wav"), music(total + 0.05))
     fx.write_wav(os.path.join(WORK, "sfx.wav"), sfx_track(total + 0.05))
-    fc = ("[0:a]loudnorm=I=-17:TP=-3,aformat=sample_rates=48000:channel_layouts=stereo[m];"
-          "[1:a]aformat=sample_rates=48000:channel_layouts=stereo,volume=0.9[s];"
-          "[m][s]amix=inputs=2:normalize=0,"
-          f"loudnorm=I=-14:TP=-1:LRA=9,aresample=48000,asetpts=N/SR/TB,apad=whole_dur={total:.3f}[out]")
-    fx.run(["ffmpeg", "-v", "error", "-y", "-i", os.path.join(WORK, "music.wav"), "-i", os.path.join(WORK, "sfx.wav"),
-            "-filter_complex", fc, "-map", "[out]", "-t", f"{total:.3f}", os.path.join(WORK, "mix.wav")])
+    tail = f"loudnorm=I=-14:TP=-1:LRA=9,aresample=48000,asetpts=N/SR/TB,apad=whole_dur={total:.3f}[out]"
+    ins = ["-i", os.path.join(WORK, "music.wav"), "-i", os.path.join(WORK, "sfx.wav")]
+    if VOICE:  # voice on top, music ducked under it, SFX a bit lower
+        ins += ["-i", os.path.join(WORK, "voice.wav")]
+        fc = ("[2:a]highpass=f=85,equalizer=f=3200:t=q:w=1.2:g=3,"
+              "acompressor=threshold=-20dB:ratio=3:attack=4:release=70:makeup=2,"
+              "loudnorm=I=-16:TP=-2:LRA=6,aformat=sample_rates=48000:channel_layouts=stereo,asplit[vox][key];"
+              "[0:a]loudnorm=I=-21:TP=-3,aformat=sample_rates=48000:channel_layouts=stereo[mus];"
+              "[mus][key]sidechaincompress=threshold=0.05:ratio=3:attack=10:release=260[musd];"
+              "[1:a]aformat=sample_rates=48000:channel_layouts=stereo,volume=0.6[s];"
+              "[vox][musd][s]amix=inputs=3:normalize=0," + tail)
+    else:
+        fc = ("[0:a]loudnorm=I=-17:TP=-3,aformat=sample_rates=48000:channel_layouts=stereo[m];"
+              "[1:a]aformat=sample_rates=48000:channel_layouts=stereo,volume=0.9[s];"
+              "[m][s]amix=inputs=2:normalize=0," + tail)
+    fx.run(["ffmpeg", "-v", "error", "-y", *ins, "-filter_complex", fc, "-map", "[out]",
+            "-t", f"{total:.3f}", os.path.join(WORK, "mix.wav")])
 
 
 # ================================================================== video
@@ -263,11 +286,22 @@ def screen_frame(seg, local, clip):
     return frame, None
 
 
-def load3d(f):
+def _read3d(f):
     im = cv2.imread(os.path.join(F3D, f"{f:04d}.png"))
     if im is None:
         im = cv2.imread(os.path.join(F3D, f"{max(0, f - 1):04d}.png"))
-    im = cv2.cvtColor(im, cv2.COLOR_BGR2RGB)
+    return cv2.cvtColor(im, cv2.COLOR_BGR2RGB).astype(np.float32)
+
+
+def load3d(seg, local):
+    """Time-remap the rendered 3D shot onto the (possibly longer) voice-fitted shot."""
+    a3, b3 = SEG3D[seg]
+    n_new = SEG[seg][1] - SEG[seg][0]
+    p = a3 + local * (b3 - a3 - 1) / max(1, n_new - 1)
+    i = int(np.floor(p))
+    w = p - i
+    im = _read3d(i) * (1 - w) + _read3d(min(i + 1, b3 - 1)) * w
+    im = im.astype(np.uint8)
     im = cv2.resize(im, (W, H), interpolation=cv2.INTER_CUBIC)
     return cv2.addWeighted(im, 1.2, cv2.GaussianBlur(im, (0, 0), 1.6), -0.2, 0)
 
@@ -343,6 +377,7 @@ def step_label(frame, seg, local, y=1540):
 
 def keyword_wheel(frame, seg, local, y=185):
     words, every = WHEELS[seg]
+    every = max(every, (SEG[seg][1] - SEG[seg][0]) // len(words))
     pos = local / every
     i = int(pos)
     frac = ease((pos - i) * every / 10) if (pos - i) * every < 10 and i > 0 else 1.0
@@ -385,7 +420,7 @@ def build_video():
     for f in range(N):
         seg, local = seg_of(f)
         if seg in ("A", "C", "E"):
-            fr = load3d(f)
+            fr = load3d(seg, local)
         elif seg in ("B", "D"):
             fr, _ = screen_frame(seg, local, clips[seg])
         elif seg == "F":
