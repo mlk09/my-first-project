@@ -81,3 +81,21 @@ python3 edit3/build_final.py
 ```
 
 This session ran in a cloud container with **no GPU**. The frames in `output/` were rendered on its CPU, with Eevee on Mesa's llvmpipe at 1280×536 and 5 samples. That's why it uses soft contact shadows instead of shadow maps (shadow maps cost about 3 s/frame on a CPU). On your RTX 5050 the same script renders far faster, so re-render with `--samples 16 --shadows` (and `--pct 150` for native 1920×804) to get a sharper, fully shadowed version.
+
+## YouTube upload
+
+- **File:** `output/Robot-and-the-Haunted-Bag-3D.mp4` (1920×1080, 24 fps, H.264 + AAC, −14 LUFS, 3:00)
+- **Thumbnail:** `thumbnail/thumbnail.jpg` (1280×720)
+- **Audience:** this is a kids' story, so set **"Yes, it's made for kids"** in YouTube Studio (required for COPPA).
+- **Title:** Robot and the Haunted Bag 👻🤖 | Spooky Bedtime Story for Kids | 3D Animation
+- **Description:**
+
+  > One foggy night, little robot Bolt finds an old patched-up bag on a tree stump... and the bag is HAUNTED! 👻
+  > Will Bolt run away, or will he find out the bag's secret? A not-too-scary Halloween story for kids about kindness and friendship. 🎃🍬
+  >
+  > 0:00 The foggy forest · 0:30 The old bag · 0:50 It's HAUNTED! · 1:04 The chase · 1:37 HIC! · 1:46 A lonely bag · 2:09 Best friends · 2:51 The end...?
+  >
+  > Subscribe for more spooky stories! @Cadd123-q2t
+  > #kidsstory #halloween #3danimation #robot #spookystory #bedtimestory
+
+- **Tags:** kids story, halloween story for kids, robot cartoon, haunted bag, 3d animation, spooky story, bedtime story, friendship story, cartoon for kids
