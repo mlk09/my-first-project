@@ -32,7 +32,7 @@ TOP = (H - PH) // 2         # 138 px bars
 FONT_ROUND = os.path.join(HERE, "assets", "fonts", "Fredoka-Bold.ttf")
 FONT_SPOOKY = os.path.join(HERE, "assets", "fonts", "Creepster.ttf")
 RAW = os.path.join(HERE, "..", "Screenrecorder-2026-10-08-17-57-24-640.mp4")
-HANDLE = "@Cadd123-q2t"
+HANDLE = "@BoltsSpookyTales"
 rng = np.random.default_rng(3)
 
 
