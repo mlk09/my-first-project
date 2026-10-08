@@ -131,6 +131,7 @@ HANDLE_IMG = handle_image()
 
 
 def over(canvas, rgba, x, y, alpha=1.0):
+    rgba = rgba[: canvas.shape[0] - y, : canvas.shape[1] - x]  # clip at the frame edge
     h, w = rgba.shape[:2]
     a = rgba[..., 3:4] * alpha
     region = canvas[y:y + h, x:x + w]
