@@ -231,8 +231,9 @@ def overlay(fr, f):
         if s2 > 0:
             txt(d, (W / 2, 370), "LED ON!", 130 * s2, YEL, stroke=11)
             if s2 > 0.9:
-                lay.alpha_composite(e5.emoji("💡", 120), (W // 2 + 250, 300))
-                lay.alpha_composite(e5.emoji("📱", 110), (W // 2 - 380, 305))
+                tw = d.textlength("LED ON!", font=font(MONT, 130))
+                lay.alpha_composite(e5.emoji("💡", 110), (int(W / 2 + tw / 2 + 20), 310))
+                lay.alpha_composite(e5.emoji("📱", 100), (int(W / 2 - tw / 2 - 120), 315))
         v = ease((local - 24) / 8)
         if v > 0:
             d.rounded_rectangle((W / 2 - 330, 1590, W / 2 + 330, 1690), 50, fill=(255, 255, 255, int(235 * v)))
