@@ -50,6 +50,8 @@ The video works without a voice. If you want to record, say each line during its
 
 ## Description
 
+YouTube does not allow angle brackets (< >) in descriptions, so the output is written as `class 'int'`.
+
 ```
 Python data types se confusion? 🤯 Yeh ek cheat sheet sab clear kar degi!
 
@@ -62,8 +64,8 @@ Is short mein Python ke 9 zaroori data types, 4 family mein:
 ✅ Set & Bool: set ({1, 2, 3}), bool (True / False)
 
 💻 Try it yourself:
-print(type(20))      # <class 'int'>
-print(type("Riya"))  # <class 'str'>
+print(type(20))      # Output: class 'int'
+print(type("Riya"))  # Output: class 'str'
 
 📸 Cheat sheet ka screenshot le lo, exam aur interview mein kaam aayegi!
 🧠 Quiz: 3.0 ka type kya hai? Answer comment mein likho 👇
