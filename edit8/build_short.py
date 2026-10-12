@@ -36,6 +36,10 @@ MONO = "/usr/share/fonts/truetype/dejavu/DejaVuSansMono-Bold.ttf"
 WHT, YEL, INK, CYAN = (255, 255, 255), (255, 214, 10), (15, 18, 26), (60, 220, 255)
 GRN, RED = (40, 230, 110), (255, 60, 60)
 SERVO_T = 270                     # servo starts turning (timeline.unlocked)
+OUTRO = 60                        # Like / Share / Subscribe card after the story (2.5 s)
+TOTAL = N + OUTRO
+BTN_POP = (4, 10, 16)             # outro-local frames: buttons pop in
+BTN_PRESS = (24, 35, 46)          # finger presses LIKE, SHARE, SUBSCRIBE
 
 
 def font(p, s):
@@ -155,12 +159,18 @@ def sfx_track(total):
     P(buf, creak(t(DOOR_OPEN[1] - DOOR_OPEN[0])), t(DOOR_OPEN[0]), 0.7)
     P(buf, fx.whoosh(0.9, 77), t(DOOR_OPEN[0] + 4), 0.45)
     P(buf, fx.ding(), t(SHOTS[6] + 14), 0.4)
+    P(buf, fx.whoosh(0.4, 5) * 0.6, t(N) - 0.2, 0.45)                   # outro
+    for a in BTN_POP:
+        P(buf, fx.pop(), t(N + a), 0.35)
+    for a in BTN_PRESS:
+        P(buf, ok_beep()[: int(0.09 * SR)] * 0.6, t(N + a), 0.4)
+    P(buf, fx.ding(), t(N + BTN_PRESS[2] + 1), 0.5)                      # bell
     return buf
 
 
 def build_audio():
     os.makedirs(WORK, exist_ok=True)
-    total = N / FPS
+    total = TOTAL / FPS
     fx.write_wav(os.path.join(WORK, "music.wav"), music(total + 0.05))
     fx.write_wav(os.path.join(WORK, "sfx.wav"), sfx_track(total + 0.05))
     fc = ("[0:a]loudnorm=I=-20:TP=-3,aformat=sample_rates=48000:channel_layouts=stereo[m];"
@@ -319,6 +329,68 @@ def zoom(fr, z, cx=W / 2, cy=H / 2, dx=0.0):
     return cv2.warpAffine(fr, M, (W, H), borderMode=cv2.BORDER_REFLECT101)
 
 
+_OUTRO_BG = None
+
+
+def outro(a):
+    """Like / Share / Subscribe end card: buttons pop in, a finger presses each one in turn."""
+    global _OUTRO_BG
+    if _OUTRO_BG is None:
+        bg = cv2.GaussianBlur(load3d(N - 1), (0, 0), 28).astype(np.float32) * 0.38
+        _OUTRO_BG = Image.fromarray(bg.astype(np.uint8)).convert("RGBA")
+    im = _OUTRO_BG.copy()
+    d = ImageDraw.Draw(im)
+    s = pop_s(a, 6)
+    txt(d, (W / 2, 330), "Project pasand aaya?", 76 * s, WHT, stroke=8)
+    if s > 0.9:
+        im.alpha_composite(e5.emoji("😍", 110), (W // 2 - 55, 410))
+    btns = [("LIKE", "👍", (255, 255, 255), (40, 120, 255)),
+            ("SHARE", "↗", (255, 255, 255), (40, 200, 110)),
+            ("SUBSCRIBE", "🔔", (230, 30, 40), (90, 90, 96))]
+    for i, (name, ic, col, pressed_col) in enumerate(btns):
+        u = pop_s(a - BTN_POP[i], 6)
+        if u <= 0:
+            continue
+        pressed = a >= BTN_PRESS[i]
+        bump = 1 + 0.08 * max(0, 1 - (a - BTN_PRESS[i]) / 5) if pressed else 1
+        w_, h_ = 640 * u * bump, 150 * u * bump
+        cy = 760 + i * 230
+        fill = pressed_col if pressed else col
+        d.rounded_rectangle((W / 2 - w_ / 2 + 6, cy - h_ / 2 + 10, W / 2 + w_ / 2 + 6, cy + h_ / 2 + 10), 75, fill=(0, 0, 0, 120))
+        d.rounded_rectangle((W / 2 - w_ / 2, cy - h_ / 2, W / 2 + w_ / 2, cy + h_ / 2), 75, fill=fill)
+        if u < 0.9:
+            continue
+        label_ = "SUBSCRIBED" if (pressed and i == 2) else ("LIKED" if (pressed and i == 0) else name)
+        tcol = WHT if (pressed or i == 2) else INK
+        d.text((W / 2 + 40, cy), label_, font=font(MONT, 62), fill=tcol, anchor="mm")
+        tw = d.textlength(label_, font=font(MONT, 62))
+        ix = int(W / 2 + 40 - tw / 2 - 110)
+        if ic == "↗":
+            d.text((ix + 45, cy), "↗", font=font("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 80),
+                   fill=tcol, anchor="mm")
+        else:
+            ang = 18 * np.sin((a - BTN_PRESS[2]) * 1.3) * max(0, 1 - (a - BTN_PRESS[2]) / 14) if (i == 2 and pressed) else 0
+            im.alpha_composite(e5.emoji(ic, 86).rotate(ang, expand=False, resample=Image.BICUBIC), (ix, int(cy - 43)))
+    # finger travelling to each button and pressing
+    if a >= BTN_POP[2] + 4:
+        tgt = [(W / 2 + 200, 760 + i * 230 + 40) for i in range(3)]
+        seg = 0 if a < BTN_PRESS[0] else 1 if a < BTN_PRESS[1] else 2
+        prev = (W / 2 + 330, 1550) if seg == 0 else tgt[seg - 1]
+        start = BTN_POP[2] + 4 if seg == 0 else BTN_PRESS[seg - 1] + 2
+        u = ease((a - start) / max(1, BTN_PRESS[seg] - 2 - start))
+        x = prev[0] + (tgt[seg][0] - prev[0]) * u
+        y = prev[1] + (tgt[seg][1] - prev[1]) * u
+        press = max(0, 1 - abs(a - BTN_PRESS[seg]) / 3)
+        sz = int(130 * (1 - 0.15 * press))
+        im.alpha_composite(e5.emoji("👆", sz), (int(x - sz * 0.35), int(y)))
+    v = ease((a - BTN_PRESS[2] - 4) / 6)
+    if v > 0:
+        txt(d, (W / 2, 1530), "@The IOT Engineer", 64 * (0.8 + 0.2 * v), YEL, stroke=6)
+        d.text((W / 2, 1620), "Aise aur ESP32 / IoT projects ke liye", font=font(BOLD, 46), fill=(235, 240, 255), anchor="mm")
+    badge(im, d)
+    return np.array(im.convert("RGB"))
+
+
 def build_video():
     os.makedirs(os.path.dirname(OUT), exist_ok=True)
     enc = subprocess.Popen(["ffmpeg", "-v", "error", "-y", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}",
@@ -328,7 +400,15 @@ def build_video():
                             "-shortest", OUT], stdin=subprocess.PIPE)
     yy, xx = np.mgrid[0:H, 0:W]
     vig = (((xx - W / 2) / (W * 0.62)) ** 2 + ((yy - H / 2) / (H * 0.6)) ** 2).clip(0, 1)[..., None].astype(np.float32)
-    for f in range(N):
+    for f in range(TOTAL):
+        if f >= N:
+            fr = outro(f - N)
+            if f - N < 4:
+                k_ = 1 - (f - N) / 4
+                fr = zoom(cv2.GaussianBlur(fr, (0, 0), 1 + 20 * k_), 1 + 0.06 * k_)
+            fr[0:10, :] = GRN
+            enc.stdin.write(np.ascontiguousarray(fr).tobytes())
+            continue
         fr = load3d(f)
         z, dx = 1.0, 0.0
         for rf, r in READS:
@@ -358,7 +438,7 @@ def build_video():
             if -3 <= dd < 4:
                 k_ = 1 - abs(dd + 0.5) / 4
                 fr = zoom(cv2.GaussianBlur(fr, (0, 0), 1 + 22 * k_), 1 + 0.06 * k_)
-        p = int(W * (f + 1) / N)                                   # lock-themed progress bar
+        p = int(W * (f + 1) / TOTAL)                               # lock-themed progress bar
         fr[0:10, :] = (fr[0:10, :] * 0.4).astype(np.uint8)
         fr[0:10, :p] = GRN if f >= READS[2][0] else (CYAN if f < READS[1][0] or f >= READS[1][0] + 30 else RED)
         enc.stdin.write(np.ascontiguousarray(fr).tobytes())
