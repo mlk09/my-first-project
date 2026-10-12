@@ -279,6 +279,33 @@ def side_text():
     return im.rotate(90, expand=True)
 
 
+@e.lru_cache(None)
+def board_bg():
+    """lighter slate glass (instead of EP 02's near-black) - white marker text still reads clearly"""
+    yy, xx = np.mgrid[0:H, 0:W].astype(np.float32)
+    r = np.sqrt(((xx - W * .5) / W) ** 2 + ((yy - H * .42) / H) ** 2)
+    base = np.clip(1 - r * 0.9, 0, 1)[..., None] * np.array([38, 44, 56], np.float32) + np.array([40, 46, 58])
+    refl = np.zeros((H, W), np.float32)
+    for off, wid, a in ((-300, 160, 9), (250, 90, 7), (700, 220, 6)):
+        refl += a * np.exp(-((xx * 0.6 - yy * 0.8 + off) / wid) ** 2)
+    base += refl[..., None]
+    rng = np.random.default_rng(2)
+    base += rng.normal(0, 1.6, (H, W, 1))
+    im = Image.fromarray(np.clip(base, 0, 255).astype(np.uint8)).convert("RGBA")
+    d = ImageDraw.Draw(im)
+    for _ in range(140):
+        x, y, s = rng.uniform(0, W), rng.uniform(0, H), rng.uniform(1, 3)
+        d.ellipse((x, y, x + s, y + s), fill=(255, 255, 255, int(rng.uniform(15, 50))))
+    return im
+
+
+@e.lru_cache(None)
+def vignette():
+    yy, xx = np.mgrid[0:H, 0:W].astype(np.float32)
+    r = np.sqrt(((xx - W / 2) / (W * .8)) ** 2 + ((yy - H / 2) / (H * .72)) ** 2)
+    return np.clip(1 - 0.25 * r ** 2.4, 0.7, 1)[..., None]
+
+
 # ------------------------------------------------------------------ audio
 def shutter():
     n = int(0.25 * SR)
@@ -347,6 +374,7 @@ e.SLAM_RULES, e.QUIZ_SLAM, e.COUNT0, e.REVEAL, e.TITLEBOX_T = SLAM, QUIZ_SLAM, C
 e.SHAKES = [(SLAM, 1.0), (QUIZ_SLAM, 0.8), (REVEAL, 0.4), (SNAP + 0.1, 0.25)]
 e.render_board, e.focus, e.mascot_layer = render_board, focus, mascot_layer
 e.title_box, e.side_text, e.sfx_track = title_box, side_text, sfx_track
+e.board_bg, e.vignette = board_bg, vignette
 
 _frame = e.frame
 
