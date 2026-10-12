@@ -311,6 +311,11 @@ def build_tokens():
             r.keyframe_insert("location", frame=fr)
             r.keyframe_insert("rotation_euler", frame=fr)
     k.interp("BEZIER")
+    for o in bpy.data.objects:                 # only on screen in the shots that use them
+        if o.parent is roots["card"]:
+            k.show(o, [(SHOTS[3] - 2, SHOTS[4])])
+        elif o.parent is roots["fob"]:
+            k.show(o, [(0, SHOTS[1] - 4), (SHOTS[4], SHOTS[5] + 2)])
 
 
 def build(sc):
