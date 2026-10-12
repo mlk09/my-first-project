@@ -193,8 +193,8 @@ def build_lock():
     def sb(nt):
         p = nt.nodes.new("ShaderNodeBsdfPrincipled")
         p.inputs["Base Color"].default_value = (0.0, 0.07, 0.55, 1)
-        p.inputs["Transmission Weight"].default_value = 0.12
-        p.inputs["Roughness"].default_value = 0.2
+        p.inputs["Roughness"].default_value = 0.25
+        p.inputs["Coat Weight"].default_value = 0.4
         return p
     body = k.node_mat("servo_body", sb)
     S = Vector((14.4, 0, 44))
@@ -385,6 +385,7 @@ if __name__ == "__main__":
     sc.render.fps = FPS
     build(sc)
     k.setup_render(sc, args.preview)
+    sc.render.use_persistent_data = False   # persistent data intermittently rendered the servo black
     cy = sc.cycles
     cy.max_bounces, cy.transmission_bounces, cy.glossy_bounces = 8, 6, 3
     cy.samples = 8 if args.preview else 14
