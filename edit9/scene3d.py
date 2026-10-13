@@ -193,7 +193,6 @@ def build(sc):
     bg.inputs["Strength"].default_value = 0.3
     plane("mat", (300, 300), Vector((0, 0, 0)), tex_mat("mat_m", os.path.join(TEX, "mat.png"), rough=0.75, scale=12.0, bump=0.05))
     plane("wall", (600, 300), Vector((0, 120, 60)), k.pbr("wall_m", (0.05, 0.055, 0.07), rough=0.8), rot=R90)
-    k.text("sign", "ROBO LAB", 16, Vector((-10, 115, 70)), [k.emit("neon", (1.0, 0.25, 0.8), 1.4)], extrude=0.5)
     k.text("sign2", "PID", 10, Vector((55, 115, 45)), [k.emit("neon2", (0.2, 0.9, 1.0), 1.4)], extrude=0.5)
     k.area("key", (-40, -50, 90), (0, 0, 8), 110000, 45)
     k.area("fill", (60, -40, 50), (0, 0, 8), 35000, 50, col=(0.85, 0.9, 1.0))
