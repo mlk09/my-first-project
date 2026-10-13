@@ -35,7 +35,7 @@ def text(d, xy, s, size, fill, stroke=10):
 d = ImageDraw.Draw(canvas)
 text(d, (W // 2, 140), "SIRF 2 WIRE!", 128, YEL, 12)
 text(d, (W // 2, 285), "ESP32 + OLED", 104, WHT, 10)
-canvas.alpha_composite(emoji("🤯", 120, -8), (W - 170, 210))
+canvas.alpha_composite(emoji("🤯", 130, -8), (W // 2 - 65, 1410))
 d.rounded_rectangle((130, 390, W - 130, 490), 50, fill=(60, 220, 255))
 d.text((W // 2, 440), "I2C Display Tutorial", font=ImageFont.truetype(FONT, 52), fill=INK, anchor="mm")
 for i, (lab, sub, col) in enumerate((("SDA", "Data", SDA_C), ("SCL", "Clock", SCL_C))):
