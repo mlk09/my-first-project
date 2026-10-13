@@ -430,5 +430,30 @@ e.render_board, e.focus, e.mascot_layer = render_board, focus, mascot_layer
 e.title_box, e.side_text, e.sfx_track = title_box, side_text, sfx_track
 e.frame = p3._frame            # plain engine frame (no EP 03 screenshot flash)
 
+
+@e.lru_cache(None)
+def board_bg():
+    """warm glass: a slightly brighter orange-red glow in the middle, deep maroon edges
+    (still dark enough for the white / yellow marker writing to pop)"""
+    yy, xx = np.mgrid[0:H, 0:W].astype(np.float32)
+    r = np.clip(np.sqrt(((xx - W * .5) / W) ** 2 + ((yy - H * .42) / H) ** 2) / 0.85, 0, 1)[..., None]
+    centre, edge = np.array([118, 52, 34], np.float32), np.array([58, 20, 24], np.float32)
+    base = centre * (1 - r) + edge * r
+    refl = np.zeros((H, W), np.float32)
+    for off, wid, a in ((-300, 160, 10), (250, 90, 8), (700, 220, 7)):
+        refl += a * np.exp(-((xx * 0.6 - yy * 0.8 + off) / wid) ** 2)
+    base += refl[..., None] * np.array([1.0, 0.75, 0.6])
+    rng = np.random.default_rng(2)
+    base += rng.normal(0, 1.6, (H, W, 1))
+    im = Image.fromarray(np.clip(base, 0, 255).astype(np.uint8)).convert("RGBA")
+    d = ImageDraw.Draw(im)
+    for _ in range(140):
+        x, y, s = rng.uniform(0, W), rng.uniform(0, H), rng.uniform(1, 3)
+        d.ellipse((x, y, x + s, y + s), fill=(255, 230, 210, int(rng.uniform(15, 50))))
+    return im
+
+
+e.board_bg = board_bg
+
 if __name__ == "__main__":
     e.main()
