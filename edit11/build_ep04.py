@@ -420,17 +420,15 @@ def draw_recap(st, t):
 def caption_img(text):
     tags = {"*": YEL, "+": GREEN, "-": RED}
     parts = []
-    for tok in text.split(" "):
-        c = WHITE
-        if tok and tok[0] in tags and tok[-1] in tags or (tok and tok[0] in tags):
-            c = tags[tok[0]]
-            tok = tok.strip("*+-")
-        elif tok and tok[-1] in tags:
-            tok = tok.rstrip("*+-")
+    whole = text[0] in "+-" and text[-1] == text[0] and len(text) > 1
+    body = text[1:-1] if whole else text
+    for tok in body.split(" "):
+        c = tags[text[0]] if whole else WHITE
+        if not whole and len(tok) > 2 and tok[0] in tags and tok[0] in tok[1:]:
+            ch = tok[0]
+            end = tok.rindex(ch)
+            c, tok = tags[ch], tok[1:end] + tok[end + 1:]     # *word* (and *word*! style)
         parts.append((tok, c))
-    # whole-line tags like +NAMASTE AMAN!+
-    if text[0] in "+-" and text[-1] == text[0]:
-        parts = [(p.strip("+-"), tags[text[0]]) for p, _ in parts]
     size = 76
     f = mb.font(CAP, size)
     sp = f.getlength(" ")
