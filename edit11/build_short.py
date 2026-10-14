@@ -37,8 +37,11 @@ GRN, RED, ORG = (40, 230, 110), (255, 60, 60), (255, 140, 30)
 ALARM1 = first_alarm(0, SHOTS[1])                 # hook alert
 ALARM2 = first_alarm(SHOTS[4], SHOTS[5])          # alarm shot
 CLEAR = PRESENT[1][1] + SLIDE                     # cube gone again
+SLOW = 1.21875                    # story plays 21.9% slower (16 s -> 19.5 s) so every caption can be read
+NS = round(N * SLOW)              # story length in output frames (468)
+F3D_SLOW = os.path.join(WORK, "frames_slow")   # frames3d motion-interpolated to NS frames by ffmpeg minterpolate
 OUTRO = 60
-TOTAL = N + OUTRO
+TOTAL = NS + OUTRO                # 528 frames = 22 s
 BTN_POP = (4, 10, 16)
 BTN_PRESS = (24, 35, 46)
 
@@ -53,7 +56,13 @@ def shot_of(f):
 
 
 def t(f):
-    return f / FPS
+    """Story frame (source timeline) -> seconds in the slowed edit."""
+    return f * SLOW / FPS
+
+
+def t_out(a):
+    """Outro-local frame -> seconds (outro plays at normal speed after the story)."""
+    return (NS + a) / FPS
 
 
 def beep(freq, dur, square=False):
@@ -67,10 +76,21 @@ def ok_beep():
     return np.concatenate([beep(2700, 0.09), np.zeros(int(0.04 * SR)), beep(3600, 0.16)])
 
 
+def load3d_slow(g):
+    """Story frame g of the slowed edit: motion-interpolated render frames (ffmpeg minterpolate)."""
+    im = cv2.imread(os.path.join(F3D_SLOW, f"{min(g, NS - 1):04d}.png"))
+    return _grade(im)
+
+
 def load3d(f):
     im = cv2.imread(os.path.join(F3D, f"{f:04d}.png"))
     if im is None:
         im = cv2.imread(os.path.join(F3D, f"{max(0, f - 1):04d}.png"))
+    return _grade(im)
+
+
+def _grade(im):
+    """BGR render -> graded 1080x1920 RGB (sharpen + saturated-highlight bloom)."""
     im = cv2.cvtColor(im, cv2.COLOR_BGR2RGB)
     im = cv2.resize(im, (W, H), interpolation=cv2.INTER_CUBIC)
     im = cv2.addWeighted(im, 1.25, cv2.GaussianBlur(im, (0, 0), 1.6), -0.25, 0)
@@ -244,13 +264,13 @@ def buzz():
 def servo_hum(total):
     n = int(total * SR)
     tt = np.arange(n) / SR
-    fr = np.clip(tt * FPS, 0, N - 1)
+    fr = np.clip(tt * FPS / SLOW, 0, N - 1)
     ang = np.interp(fr, np.arange(N), [sweep(f) for f in range(N)])
     spd = np.abs(np.gradient(ang)) * SR / FPS
     spd = np.minimum(spd / 6.0, 1.0)
     x = fx.signal.sawtooth(2 * np.pi * np.cumsum(160 + 60 * spd) / SR)
     x = fx.filt(x, "bandpass", [150, 2200]) + 0.2 * fx.filt(fx.noise(n, 61), "bandpass", [2000, 6000])
-    return x * (0.25 + 0.75 * spd) * (tt * FPS >= BOOT) * (tt * FPS < N) * 0.06
+    return x * (0.25 + 0.75 * spd) * (tt * FPS / SLOW >= BOOT) * (tt * FPS / SLOW < N) * 0.06
 
 
 def music(total):
@@ -309,12 +329,12 @@ def sfx_track(total):
     P(buf, ok_beep(), t(CLEAR + 2), 0.45)
     P(buf, fx.ding(), t(CLEAR + 4), 0.4)
     P(buf, fx.ding(), t(SHOTS[6] + 14), 0.4)
-    P(buf, fx.whoosh(0.4, 5) * 0.6, t(N) - 0.2, 0.45)
+    P(buf, fx.whoosh(0.4, 5) * 0.6, t_out(0) - 0.2, 0.45)
     for a in BTN_POP:
-        P(buf, fx.pop(), t(N + a), 0.35)
+        P(buf, fx.pop(), t_out(a), 0.35)
     for a in BTN_PRESS:
-        P(buf, ok_beep()[: int(0.09 * SR)] * 0.6, t(N + a), 0.4)
-    P(buf, fx.ding(), t(N + BTN_PRESS[2] + 1), 0.5)
+        P(buf, ok_beep()[: int(0.09 * SR)] * 0.6, t_out(a), 0.4)
+    P(buf, fx.ding(), t_out(BTN_PRESS[2] + 1), 0.5)
     return buf + servo_hum(total)
 
 
@@ -442,16 +462,17 @@ def build_video():
                             "-shortest", OUT], stdin=subprocess.PIPE)
     yy, xx = np.mgrid[0:H, 0:W]
     vig = (((xx - W / 2) / (W * 0.62)) ** 2 + ((yy - H / 2) / (H * 0.6)) ** 2).clip(0, 1)[..., None].astype(np.float32)
-    for f in range(TOTAL):
-        if f >= N:
-            fr = outro(f - N)
-            if f - N < 4:
-                k_ = 1 - (f - N) / 4
+    for g in range(TOTAL):
+        if g >= NS:
+            fr = outro(g - NS)
+            if g - NS < 4:
+                k_ = 1 - (g - NS) / 4
                 fr = zoom(cv2.GaussianBlur(fr, (0, 0), 1 + 20 * k_), 1 + 0.06 * k_)
             fr[0:10, :] = GRN
             enc.stdin.write(np.ascontiguousarray(fr).tobytes())
             continue
-        fr = load3d(f)
+        f = g / SLOW                                              # source-timeline frame (fractional)
+        fr = load3d_slow(g)
         z, dx = 1.0, 0.0
         for ev in (ALARM1, ALARM2):
             a = f - ev
@@ -476,12 +497,12 @@ def build_video():
             if -3 <= dd < 4:
                 k_ = 1 - abs(dd + 0.5) / 4
                 fr = zoom(cv2.GaussianBlur(fr, (0, 0), 1 + 22 * k_), 1 + 0.06 * k_)
-        p = int(W * (f + 1) / TOTAL)
+        p = int(W * (g + 1) / TOTAL)
         fr[0:10, :] = (fr[0:10, :] * 0.4).astype(np.uint8)
         fr[0:10, :p] = RED if alarm(f) else GRN
         enc.stdin.write(np.ascontiguousarray(fr).tobytes())
-        if f % 48 == 0:
-            print(f"  frame {f}/{TOTAL}", flush=True)
+        if g % 48 == 0:
+            print(f"  frame {g}/{TOTAL}", flush=True)
     enc.stdin.close()
     enc.wait()
     print("wrote", OUT)
