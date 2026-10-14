@@ -78,7 +78,11 @@ def ok_beep():
 
 def load3d_slow(g):
     """Story frame g of the slowed edit: motion-interpolated render frames (ffmpeg minterpolate)."""
-    im = cv2.imread(os.path.join(F3D_SLOW, f"{min(g, NS - 1):04d}.png"))
+    g = min(g, NS - 1)
+    im = cv2.imread(os.path.join(F3D_SLOW, f"{g:04d}.png"))
+    while im is None and g > 0:                       # minterpolate can come up a frame or two short
+        g -= 1
+        im = cv2.imread(os.path.join(F3D_SLOW, f"{g:04d}.png"))
     return _grade(im)
 
 
@@ -495,7 +499,7 @@ def build_video():
         for s in SHOTS[1:]:
             dd = f - s
             if -3 <= dd < 4:
-                k_ = 1 - abs(dd + 0.5) / 4
+                k_ = max(0.0, 1 - abs(dd + 0.5) / 4)
                 fr = zoom(cv2.GaussianBlur(fr, (0, 0), 1 + 22 * k_), 1 + 0.06 * k_)
         p = int(W * (g + 1) / TOTAL)
         fr[0:10, :] = (fr[0:10, :] * 0.4).astype(np.uint8)
