@@ -25,11 +25,11 @@
 | 05 | Type Casting ✅ | 15 | String methods (upper/title/len) | 25 | Default arguments |
 | 06 | Operators ✅ | 16 | String slicing | 26 | lambda |
 | 07 | f-strings ✅ | 17 | Lists | 27 | try / except |
-| 08 | if-else | 18 | List methods | 28 | File handling |
+| 08 | if-else ✅ | 18 | List methods | 28 | File handling |
 | 09 | elif | 19 | Tuples | 29 | Modules & pip |
 | 10 | and / or / not | 20 | Nested loops (pattern) | 30 | Mini project: Number Guessing Game |
 
-**Made so far:** EP 01 → `edit8/output/`, EP 02 → `edit9/output/`, EP 03 → `edit10/output/`, EP 04 → `edit11/output/`, EP 05 → `edit12/output/`, EP 06 → `edit13/output/`, EP 07 → `edit14/output/` (posting kits in each folder).
+**Made so far:** EP 01 → `edit8/output/`, EP 02 → `edit9/output/`, EP 03 → `edit10/output/`, EP 04 → `edit11/output/`, EP 05 → `edit12/output/`, EP 06 → `edit13/output/`, EP 07 → `edit14/output/`, EP 08 → `edit15/output/` (posting kits in each folder).
 
 Common hashtags for the whole series: `#python #pythonbasics #pythonforbeginners #coding #programming #learnpython #hinglish #codinginhindi #shorts`
 
