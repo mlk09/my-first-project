@@ -1,7 +1,7 @@
 # EP 08: Python if-else, code ko decision sikhao
 
 **Video:** `output/Python_ki_Pathshala_EP08_IfElse.mp4` (58 s, 1080×1920, works without a voice-over)
-**Look:** code on **white label boxes** that wipe in line by line (the text style from your screenshot), on a **light neon cobalt motion grid**
+**Look:** code on **white label boxes** that wipe in line by line (the text style from your screenshot), on the **same neon cobalt motion grid as EP 07**, with a **cyclist** in the traffic scene
 **Rebuild:** `python3 edit15/build_ep08.py`
 
 ## Reference decode: "Python Basics CONDITIONAL STATEMENTS (if else) in Under a Minute!"
@@ -23,7 +23,7 @@ The reference is 720×1280, 30 fps, 28 s. I measured it with a 2 fps contact she
 | Time | Scene |
 |---|---|
 | 0.0–3.5 | **Hook / thumbnail:** `PYTHON` / **`IF - ELSE`** on white boxes (the second one highlighted), ribbon "CODE KO DECISION SIKHAO!", white-box chips `if`, `else:`, `elif`, `>= 18`, and the mascot |
-| 3.5–17.0 | **Traffic-signal analogy (flat illustration):** `if signal == "laal":` / `ruko()` / `else:` / `chalo()` wipe in on white boxes. A flat road card slides up. The red car drives in, **brakes at the red light** (squeal), and the **if branch lights up yellow** ("Laal hai = RUKO!"). Then the light turns **green** (ding), the **else branch** lights up, the car honks and drives off ("Hara = CHALO!") |
+| 3.5–17.0 | **Traffic-signal analogy (flat illustration):** `if signal == "laal":` / `ruko()` / `else:` / `chalo()` wipe in on white boxes. A flat road card slides up. A **cyclist** pedals in (chain ticks), **brakes at the red light** (squeal), and the **if branch lights up yellow** ("Laal hai = RUKO!"). Then the light turns **green** (ding), the **else branch** lights up, the **bicycle bell rings** and the cyclist rides off ("Hara = CHALO!") |
 | 17.0–31.0 | **Vote demo with live checks:** `age = 16` → `16 >= 18` → **False** (buzz), else is highlighted, **Output: Abhi nahi**. Then the age line flashes and **retypes to `age = 20`** → **True** (ding), the if branch is highlighted, **Output: Vote do!** with sparkles |
 | 31.0–37.0 | **Indentation warning** (the reference's callout, our words): a white box with a yellow ⚠, *"DHYAN DO! Line ke end mein : (colon) aur andar 4 space ka gap!"*, with a red ring on the colon and a red bracket marking "4 space". Shake and alarm beeps |
 | 37.0–45.5 | **elif in one shot:** `marks = 75`. `if marks >= 90` → False, `elif marks >= 60` → True, `print("B")` highlighted, Output: B ("elif = doosra mauka!") |
@@ -34,18 +34,18 @@ The reference is 720×1280, 30 fps, 28 s. I measured it with a 2 fps contact she
 - Every line's white box wipes in from the left, then the code types on with a cursor.
 - The active branch turns yellow with a side marker.
 - Each scene slides up with a white flash, and the screen shakes on the warning.
-- The car has spinning wheels, and the signal lamps glow.
+- The cyclist pedals, the spoked wheels spin, and the signal lamps glow.
 - The background is a light neon cobalt grid scrolling down, with a scan band and drifting particles.
 
 **Sound:**
 - A lo-fi music bed (like the reference's soft bed) that breaks for one beat before the warning.
 - A swish for every box wipe and a key click for every character.
-- Car engine hum, brake squeal, a ding when the light turns green, a horn beep and the engine revving off.
+- Bicycle chain ticks, brake squeal, a ding when the light turns green, a bell ring and faster chain ticks riding off.
 - A buzz for False and a ding for True, plus boom + alarm beeps on the warning.
 - Quiz ticks, a reveal ding, and the end-screen clicks and bell.
 - **Master: -14 LUFS.**
 
-**Thumbnail:** cut it at **0:02.3** (hook) or **0:10** (code + red light + stopped car).
+**Thumbnail:** cut it at **0:02.3** (hook) or **0:10** (code + red light + stopped cyclist).
 
 ---
 
@@ -55,8 +55,8 @@ The reference is 720×1280, 30 fps, 28 s. I measured it with a 2 fps contact she
 |---|---|
 | 0.0–3.5 | "Aapka code bhi **decision** le sakta hai! If-else se." |
 | 3.5–7.0 | "Socho traffic signal: agar signal laal hai, toh ruko… warna chalo." |
-| 7.0–11.8 | "Signal laal hai, toh gaadi **ruk gayi**. Yeh hai if." |
-| 11.8–17.0 | "Signal hara hua, toh else chala: gaadi **chal padi**!" |
+| 7.0–11.8 | "Signal laal hai, toh cycle **ruk gayi**. Yeh hai if." |
+| 11.8–17.0 | "Signal hara hua, toh else chala: cycle **chal padi**!" |
 | 17.0–22.5 | "Ab code: age 16 hai. Kya 16, 18 se bada hai? Nahi, False. Toh else: Abhi nahi." |
 | 22.5–31.0 | "Age 20 karo… ab True! Output: Vote do!" |
 | 31.0–37.0 | "Dhyan do: if ke end mein colon, aur andar ki line mein 4 space ka gap. Yeh bhoolna mat!" |
@@ -69,7 +69,7 @@ The reference is 720×1280, 30 fps, 28 s. I measured it with a 2 fps contact she
 ## Title (pick one)
 
 1. **Python if-else 🚦 Code Ko Decision Lena Sikhao | Python for Beginners in Hindi #shorts** ⭐ (recommended)
-2. **Traffic Signal Se Samjho Python if-else 🚗 | Python ki Pathshala EP 08 #shorts**
+2. **Traffic Signal Se Samjho Python if-else 🚲 | Python ki Pathshala EP 08 #shorts**
 3. **Laal Signal = Ruko, Hara = Chalo! 🚦 Python if else Easy Hindi #shorts**
 
 ## Description (no angle brackets: comparisons are written in words)

@@ -100,7 +100,7 @@ GRID = 96
 def grid_tile():
     yy, xx = np.mgrid[0:H + GRID, 0:W].astype(np.float32)
     r = np.sqrt(((xx - W * .5) / W) ** 2 + ((yy - H * .45) / H) ** 2)
-    base = np.clip(1 - r * 1.0, 0, 1)[..., None] * np.array([30, 62, 150], np.float32) + np.array([16, 30, 84])
+    base = np.clip(1 - r * 1.1, 0, 1)[..., None] * np.array([10, 22, 70], np.float32) + np.array([4, 7, 22])
     lines = Image.new("L", (W, H + GRID), 0)
     d = ImageDraw.Draw(lines)
     for x in range(0, W + 1, GRID):
@@ -108,22 +108,22 @@ def grid_tile():
     for y in range(0, H + GRID + 1, GRID):
         d.line((0, y, W, y), fill=255, width=2)
     core = np.asarray(lines).astype(np.float32) / 255
-    halo = np.asarray(lines.filter(ImageFilter.GaussianBlur(8))).astype(np.float32) / 255
-    neon = (core * 0.7 + halo * 1.8) * (0.45 + 0.55 * np.clip(1 - r * 0.8, 0, 1))
-    return base + neon[..., None] * np.array([90, 160, 255], np.float32)
+    halo = np.asarray(lines.filter(ImageFilter.GaussianBlur(7))).astype(np.float32) / 255
+    neon = (core * 0.55 + halo * 1.6) * (0.35 + 0.65 * np.clip(1 - r * 0.9, 0, 1))
+    return base + neon[..., None] * np.array([40, 110, 255], np.float32)      # same as EP 07
 
 
 def background(t):
     off = int(t * 36) % GRID
     a = grid_tile()[off:off + H].copy()
     yb = (t % 4.0) / 4.0 * (H + 600) - 300
-    a += np.exp(-((np.arange(H) - yb) / 150.0) ** 2)[:, None, None] * np.array([25, 55, 130], np.float32) * 0.55
+    a += np.exp(-((np.arange(H) - yb) / 140.0) ** 2)[:, None, None] * np.array([20, 45, 120], np.float32) * 0.6
     img = Image.fromarray(np.clip(a, 0, 255).astype(np.uint8)).convert("RGBA")
     d = ImageDraw.Draw(img)
     rng = np.random.default_rng(4)
-    for _ in range(55):
+    for _ in range(60):
         x, y0, sp, s = rng.uniform(0, W), rng.uniform(0, H), rng.uniform(20, 60), rng.uniform(1.5, 3.5)
-        d.ellipse((x, (y0 - t * sp) % H, x + s, (y0 - t * sp) % H + s), fill=(190, 220, 255, int(rng.uniform(70, 170))))
+        d.ellipse((x, (y0 - t * sp) % H, x + s, (y0 - t * sp) % H + s), fill=(150, 190, 255, int(rng.uniform(60, 160))))
     return img
 
 
@@ -271,20 +271,44 @@ def draw_light(d, ox, oy, state, t):
         d.ellipse((pole_x - 34, cy - 34, pole_x + 34, cy + 34), fill=on_col if on else off_col)
 
 
-def draw_car(lay, x, y, spin):
+def draw_cycle(lay, x, y, spin):
+    """flat cyclist: two spoked wheels, frame, pedalling rider (spin = wheel angle)"""
     d = ImageDraw.Draw(lay)
-    d.ellipse((x - 10, y + 50, x + 250, y + 78), fill=(0, 0, 0, 70))
-    d.rounded_rectangle((x, y - 10, x + 240, y + 52), 26, fill=(230, 60, 60))
-    d.polygon([(x + 50, y - 10), (x + 85, y - 62), (x + 170, y - 62), (x + 205, y - 10)], fill=(230, 60, 60))
-    d.polygon([(x + 66, y - 14), (x + 92, y - 52), (x + 124, y - 52), (x + 124, y - 14)], fill=(190, 225, 245))
-    d.polygon([(x + 134, y - 14), (x + 134, y - 52), (x + 164, y - 52), (x + 190, y - 14)], fill=(190, 225, 245))
-    d.rectangle((x + 222, y + 2, x + 238, y + 14), fill=(255, 230, 120))
-    for wx in (x + 55, x + 185):
-        d.ellipse((wx - 30, y + 22, wx + 30, y + 82), fill=(35, 35, 40))
-        d.ellipse((wx - 13, y + 39, wx + 13, y + 65), fill=(180, 180, 185))
-        a = spin
-        d.line((wx + 12 * math.cos(a), y + 52 + 12 * math.sin(a), wx - 12 * math.cos(a), y + 52 - 12 * math.sin(a)),
-               fill=(80, 80, 85), width=4)
+    gy = y + 82                                    # ground line
+    rw = 46
+    rear, front = (x + 52, gy - rw), (x + 214, gy - rw)
+    crank = (x + 128, gy - rw)
+    d.ellipse((x + 10, gy - 6, x + 260, gy + 10), fill=(0, 0, 0, 60))
+    for cx, cy in (rear, front):                    # wheels
+        d.ellipse((cx - rw, cy - rw, cx + rw, cy + rw), outline=(35, 35, 45), width=9)
+        for k in range(6):
+            a = spin + k * math.pi / 3
+            d.line((cx, cy, cx + (rw - 6) * math.cos(a), cy + (rw - 6) * math.sin(a)), fill=(150, 155, 165), width=3)
+        d.ellipse((cx - 6, cy - 6, cx + 6, cy + 6), fill=(70, 70, 80))
+    seat, head_t = (x + 108, gy - 128), (x + 196, gy - 120)
+    frame = (0, 170, 200)
+    for a_, b_ in ((rear, crank), (crank, seat), (seat, rear), (seat, head_t), (crank, head_t), (head_t, front)):
+        d.line((a_, b_), fill=frame, width=10)
+    d.rounded_rectangle((seat[0] - 26, seat[1] - 10, seat[0] + 18, seat[1] + 2), 5, fill=(40, 40, 50))
+    bar = (head_t[0] + 6, head_t[1] - 22)
+    d.line((head_t, bar), fill=(40, 40, 50), width=7)
+    d.line((bar[0] - 18, bar[1], bar[0] + 10, bar[1]), fill=(40, 40, 50), width=8)
+    # rider
+    hip = (seat[0] - 2, seat[1] - 14)
+    sh = (x + 168, gy - 214)
+    for side, ph in ((0, 0.0), (1, math.pi)):       # legs pedalling (back leg drawn darker)
+        pa = spin * 1.6 + ph
+        foot = (crank[0] + 24 * math.cos(pa), crank[1] + 24 * math.sin(pa))
+        knee = ((hip[0] + foot[0]) / 2 + 26, (hip[1] + foot[1]) / 2 - 22)
+        col = (40, 60, 120) if side else (60, 90, 170)
+        d.line((hip, knee, foot), fill=col, width=16, joint="curve")
+        d.line((foot[0] - 14, foot[1], foot[0] + 14, foot[1]), fill=(30, 30, 30), width=8)
+    d.line((hip, sh), fill=(255, 190, 40), width=30)               # shirt
+    d.line((sh, (bar[0] - 8, bar[1])), fill=(240, 200, 160), width=11)   # arm
+    d.line((sh, (sh[0] + 8, sh[1] - 14)), fill=(240, 200, 160), width=12)                     # neck
+    d.ellipse((sh[0] - 10, sh[1] - 56, sh[0] + 36, sh[1] - 10), fill=(240, 200, 160))        # head
+    d.chord((sh[0] - 14, sh[1] - 64, sh[0] + 40, sh[1] - 16), 180, 360, fill=(230, 60, 60))  # helmet
+
 
 
 SIG = dict(card=6.5, car_in=7.0, stop=9.0, green=11.8, go=12.4, off=14.6)
@@ -295,11 +319,11 @@ def car_x(t):
     if t < s["car_in"]:
         return -300
     if t < s["stop"]:
-        return -300 + (380 - -300) * (1 - (1 - (t - s["car_in"]) / (s["stop"] - s["car_in"])) ** 3)
+        return -300 + (330 - -300) * (1 - (1 - (t - s["car_in"]) / (s["stop"] - s["car_in"])) ** 3)
     if t < s["go"]:
-        return 380
+        return 330
     q = (t - s["go"]) / (s["off"] - s["go"])
-    return 380 + 900 * q * q
+    return 330 + 950 * q * q
 
 
 def draw_signal_scene(st, t):
@@ -315,7 +339,7 @@ def draw_signal_scene(st, t):
         cd = ImageDraw.Draw(card)
         draw_light(cd, 0, 0, "red" if red else "green", t)
         gy = int((y1 - y0) * 0.55)
-        draw_car(card, car_x(t), gy + 105, -car_x(t) / 30)
+        draw_cycle(card, car_x(t), gy + 105, car_x(t) / 48)
         sh = Image.new("RGBA", (W, H))
         ImageDraw.Draw(sh).rounded_rectangle((x0 + 8, y0 + 18, x1 + 8, y1 + 18), 34, fill=(0, 0, 30, 120))
         st.alpha_composite(sh.filter(ImageFilter.GaussianBlur(14)))
@@ -545,6 +569,30 @@ def frame(i):
 
 
 # ------------------------------------------------------------------ audio
+def chain(dur, faster=False):
+    """free-wheel / chain ticking of a bicycle"""
+    n = int(dur * SR)
+    out = np.zeros(n)
+    t, k = 0.0, 0
+    while t < dur:
+        tick = fx.filt(fx.noise(int(0.012 * SR), k), "bandpass", [2500, 8000]) * fx.env_exp(int(0.012 * SR), 300)
+        fx.place(out, tick * 0.5, t, 1)
+        rate = 9 + (14 * t / dur if faster else 0)
+        t += 1 / rate
+        k += 1
+    return out
+
+
+def bell():
+    n = int(0.9 * SR)
+    tt = np.arange(n) / SR
+    ring = sum(np.sin(2 * np.pi * f * tt) * np.exp(-tt * dcy) for f, dcy in ((2350, 5), (3480, 7), (4700, 9)))
+    trill = 1 + 0.35 * np.sin(2 * np.pi * 22 * tt)
+    out = ring * trill * 0.22
+    out[int(0.18 * SR):] += (ring * trill * 0.18)[: n - int(0.18 * SR)]
+    return out
+
+
 def engine(dur, rev_up=True):
     n = int(dur * SR)
     tt = np.arange(n) / SR
@@ -598,11 +646,11 @@ def sfx_track():
     for k, (t0, txt) in enumerate([(3.8, 'if signal == "laal":'), (4.6, "    ruko()"), (5.4, "else:"), (6.2, "    chalo()")]):
         sfx_label(buf, t0, txt, 26, 20 + k)
     P(buf, fx.whoosh(0.4, 7), SIG["card"], 0.5)
-    P(buf, engine(SIG["stop"] - SIG["car_in"], False), SIG["car_in"], 0.7)
+    P(buf, chain(SIG["stop"] - SIG["car_in"]), SIG["car_in"], 0.8)
     P(buf, brake(), SIG["stop"] - 0.35, 1.0)
     P(buf, fx.ding(), SIG["green"], 0.6)
-    P(buf, horn(), SIG["go"] - 0.1, 0.9)
-    P(buf, engine(SIG["off"] - SIG["go"], True), SIG["go"], 0.8)
+    P(buf, bell(), SIG["go"] - 0.2, 0.9)
+    P(buf, chain(SIG["off"] - SIG["go"], True), SIG["go"], 0.8)
     # vote
     for k, (t0, txt) in enumerate([(17.3, "age = 16"), (17.9, "if age >= 18:"), (18.5, 'print("Vote do!")'),
                                    (19.1, "else:"), (19.7, 'print("Abhi nahi")'), (20.6, "16 >= 18"), (24.0, "age = 20"),
