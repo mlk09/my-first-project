@@ -891,9 +891,9 @@ def thumbnail(path):
     base = glass_base().astype(np.float32)
     la = np.asarray(L, np.float32)
     al = la[..., 3:4] / 255
-    frame = (base + bloom(L) * 0.85) * (1 - al) + la[..., :3] * al
-    frame = gloss(np.clip(frame, 0, 255).astype(np.uint8), 0.0)
-    img = Image.fromarray(frame).convert("RGBA")
+    # thumbnail: soft glow only, so the text stays crisp instead of blown out
+    frame = (base * 0.85 + bloom(L) * 0.28) * (1 - al) + la[..., :3] * al * 0.92
+    img = Image.fromarray(np.clip(frame, 0, 255).astype(np.uint8)).convert("RGBA")
     paste(img, title_box(), 540, 95)
     paste(img, side_ep(), 34, H / 2)
     paste(img, mascot(False, "wow", 300), 900, 1700)
