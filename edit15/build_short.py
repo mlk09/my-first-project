@@ -446,6 +446,11 @@ def overlay(fr, f):
         d = ImageDraw.Draw(lay)
         s = pop_s(local, 7)
         txt(d, (W / 2, 220), "Code + Circuit FREE", 78 * s, WHT, stroke=8)
+        sc_ = pop_s(f - CHAMP, 7)
+        txt(d, (W / 2, 430), "CHAMPION!", 130 * sc_, YEL, stroke=12)
+        if sc_ > 0.9:
+            lay.alpha_composite(e5.emoji("🏆", 110), (W // 2 - 55, 500))
+            d = ImageDraw.Draw(lay)
         corner_frame(d, (70, 130, W - 70, 310), local / 8, w=9, L=130)
         v = ease((local - 10) / 8)
         if v > 0:
