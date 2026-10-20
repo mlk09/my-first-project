@@ -444,10 +444,10 @@ def overlay(fr, f):
         s = 1 + 0.3 * max(0, 1 - (f - ch[-1]) / 6) if ch else 1
         v = ease((local - 8) / 6)
         if v > 0:
-            d.rounded_rectangle((W / 2 - 300 * v, 860, W / 2 + 300 * v, 1080), 50, fill=(10, 12, 18, 225), outline=YEL + (255,), width=6)
+            d.rounded_rectangle((W / 2 - 260 * v, 730, W / 2 + 260 * v, 930), 50, fill=(10, 12, 18, 225), outline=YEL + (255,), width=6)
             if v > 0.9:
-                d.text((W / 2, 905), "SET LIMIT", font=font(MONT, 40), fill=YEL, anchor="mm")
-                txt(d, (W / 2, 1000), f"{lim:.0f}°C", 110 * s, WHT, stroke=8)
+                d.text((W / 2, 772), "SET LIMIT", font=font(MONT, 40), fill=YEL, anchor="mm")
+                txt(d, (W / 2, 860), f"{lim:.0f}°C", 100 * s, WHT, stroke=8)
         hud(lay, d, f)
     elif i == 4:
         if not on:
@@ -471,8 +471,7 @@ def overlay(fr, f):
             if s > 0.9:
                 tw = d.textlength("LED OFF", font=font(MONT, 140))
                 lay.alpha_composite(e5.emoji("❄️", 100), (int(W / 2 + tw / 2 + 10), 195))
-                d.rounded_rectangle((W / 2 - 330, 340, W / 2 + 330, 430), 45, fill=(0, 0, 0, 180))
-                d.text((W / 2, 385), "Blue LED = Sab OK", font=font(BOLD, 50), fill=WHT, anchor="mm")
+            tag(lay, d, (583, 1318), (800, 1000), "Blue LED", "Sab OK", ease((f - OFF2 - 4) / 10))
         hud(lay, d, f)
     else:
         g = Image.new("L", (1, H))
