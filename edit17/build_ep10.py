@@ -59,7 +59,7 @@ WRITES += [(26.8 + 0.5 * k, "ordemo", CX, y, [(txt, None)], 44, CODE) for k, (y,
 WRITES += [(34.5 + 0.5 * k, "quiz", CX, y, [(txt, None)], 46, CODE) for k, (y, txt) in enumerate(QUIZ_CODE)]
 p7.CODEBOX = {"club": (6.95, 680, 1015), "ordemo": (26.55, 480, 750)}
 
-CLUB_CHECKS = [(10.2, 300, 1100, "age >= 18  True", GREEN), (10.8, 780, 1100, "has_id  True", GREEN)]
+CLUB_CHECKS = [(10.2, 278, 1100, "age >= 18  True", GREEN), (10.8, 805, 1100, "has_id  True", GREEN)]
 AND_T = 10.8                     # "and" joins the two pills
 OUT_T = 11.6                     # Output: Entry (green)
 ID_FAIL = 13.4                   # has_id -> False, output flips to Entry band
@@ -116,8 +116,8 @@ def draw_club(st, t):
         if t >= t0:
             if t >= ID_FAIL and "has_id" in txt:
                 txt, col = "has_id  False", RED
-            paste(st, pill(txt, col, 40), x, y, pop(t - t0, 0.25))
-    join_word(st, t, AND_T + 0.15, "and", CYAN, 552, 1100)
+            paste(st, pill(txt, col, 37), x, y, pop(t - t0, 0.25))
+    join_word(st, t, AND_T + 0.15, "and", CYAN, 540, 1100)
     if ID_FAIL <= t:             # flip has_id to False on the code line
         a = t - ID_FAIL
         lay = Image.new("RGBA", st.size)
