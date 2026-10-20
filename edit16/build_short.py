@@ -405,7 +405,7 @@ def overlay(fr, f):
     badge(lay, d)
     on = hot(f)
     if i in (0, 4):
-        heat_waves(lay, f, *MUG_XY, ease((mug(f) - 0.6) / 0.4))
+        heat_waves(lay, f, *(MUG_XY if i == 0 else (830, 500)), ease((mug(f) - 0.6) / 0.4))
         d = ImageDraw.Draw(lay)
     if i == 0:
         s = pop_s(local, 6)
@@ -444,10 +444,10 @@ def overlay(fr, f):
         s = 1 + 0.3 * max(0, 1 - (f - ch[-1]) / 6) if ch else 1
         v = ease((local - 8) / 6)
         if v > 0:
-            d.rounded_rectangle((W / 2 - 300 * v, 1180, W / 2 + 300 * v, 1400), 50, fill=(10, 12, 18, 225), outline=YEL + (255,), width=6)
+            d.rounded_rectangle((W / 2 - 300 * v, 860, W / 2 + 300 * v, 1080), 50, fill=(10, 12, 18, 225), outline=YEL + (255,), width=6)
             if v > 0.9:
-                d.text((W / 2, 1225), "SET LIMIT", font=font(MONT, 40), fill=YEL, anchor="mm")
-                txt(d, (W / 2, 1320), f"{lim:.0f}°C", 110 * s, WHT, stroke=8)
+                d.text((W / 2, 905), "SET LIMIT", font=font(MONT, 40), fill=YEL, anchor="mm")
+                txt(d, (W / 2, 1000), f"{lim:.0f}°C", 110 * s, WHT, stroke=8)
         hud(lay, d, f)
     elif i == 4:
         if not on:
