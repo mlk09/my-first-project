@@ -376,7 +376,7 @@ def heat_waves(lay, f, cx, cy, amt):
         pts = []
         for s in range(14):
             v = s / 13
-            y = cy - 40 - (v + ph) * 160
+            y = cy - 10 - (v * 0.6 + ph) * 120
             x = cx + (j - 1) * 46 + 16 * math.sin(v * 7 + f * 0.25 + j)
             pts.append((x, y))
         a = int(200 * amt * math.sin(math.pi * ph))
@@ -384,13 +384,13 @@ def heat_waves(lay, f, cx, cy, amt):
 
 
 TAGS = {   # shot-1 anchors on the top-down wide (measured on the render)
-    "esp": ((300, 900), (230, 1240), "ESP32", "Dimaag"),
-    "oled": ((620, 880), (780, 1240), "OLED", "Live Temp"),
-    "dht": ((560, 560), (300, 360), "DHT11", "Temp + Humidity"),
-    "knob": ((300, 1300), (270, 1560), "Knob", "Limit set"),
-    "leds": ((700, 1290), (800, 1560), "LEDs", "HOT / OK"),
+    "esp": ((320, 860), (220, 660), "ESP32", "Dimaag"),
+    "oled": ((650, 860), (880, 720), "OLED", "Live Temp"),
+    "dht": ((590, 500), (850, 470), "DHT11", "Temp + Humidity"),
+    "knob": ((370, 1300), (250, 1560), "Knob", "Limit set"),
+    "leds": ((640, 1280), (820, 1560), "LEDs", "HOT / OK"),
 }
-MUG_XY = (820, 610)                   # hook / heat shot mug top (measured on the render)
+MUG_XY = (860, 560)                   # hook / heat shot mug top (measured on the render)
 
 
 def overlay(fr, f):
