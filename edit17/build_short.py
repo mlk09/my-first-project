@@ -369,7 +369,7 @@ def hud(lay, d, f, y0=1590):
 TAGS = {   # shot-1 anchors on the top-down wide (measured on the render)
     "esp": ((320, 860), (220, 660), "ESP32", "Dimaag"),
     "oled": ((650, 860), (880, 720), "OLED", "Live distance"),
-    "hc": ((520, 420), (830, 330), "HC-SR04", "Ultrasonic aankhein"),
+    "hc": ((350, 430), (790, 470), "HC-SR04", "Ultrasonic aankhein"),
     "knob": ((370, 1300), (250, 1560), "Knob", "Range set"),
     "leds": ((640, 1280), (820, 1560), "LED + Buzzer", "ALERT / CLEAR"),
 }
@@ -392,11 +392,11 @@ def overlay(fr, f):
         txt(d, (W / 2, 250), "Koi paas aaya?", 80 * s, WHT, stroke=8)
         s2 = pop_s(f - ON1, 6)
         if s2 > 0:
-            txt(d, (W / 2, 420), "WARNING!", 150 * s2, RED, stroke=13)
+            txt(d, (W / 2, 420), "WARNING!", 128 * s2, RED, stroke=12)
             if s2 > 0.9:
-                tw = d.textlength("WARNING!", font=font(MONT, 150))
-                lay.alpha_composite(e5.emoji("🚨", 110), (int(W / 2 + tw / 2 + 6), 360))
-                lay.alpha_composite(e5.emoji("🚨", 110), (int(W / 2 - tw / 2 - 116), 360))
+                tw = d.textlength("WARNING!", font=font(MONT, 128))
+                lay.alpha_composite(e5.emoji("🚨", 92), (int(W / 2 + tw / 2 + 8), 370))
+                lay.alpha_composite(e5.emoji("🚨", 92), (int(W / 2 - tw / 2 - 100), 370))
         hud(lay, d, f)
     elif i == 1:
         label(lay, d, "ESP32 Object Detector", None, local, y=230, em=None)
