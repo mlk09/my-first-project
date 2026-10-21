@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""1080x1920 Shorts thumbnail for the ESP32 + OLED rotary-encoder LED flow: rainbow LED row + knob,
+"""1080x1920 Shorts thumbnail (all words inside y = 190..1690: desktop YouTube crops the top / bottom) for the ESP32 + OLED rotary-encoder LED flow: rainbow LED row + knob,
 OLED inset (step counter + arrows), big hook text. Optional args: <background frame> <oled frame>."""
 import os
 import sys
@@ -18,7 +18,7 @@ YEL, WHT, INK, RED = (255, 214, 10), (255, 255, 255), (15, 18, 26), (255, 60, 60
 
 canvas = Image.open(FRAME).convert("RGB").resize((W, H), Image.LANCZOS).convert("RGBA")
 g = Image.new("L", (1, H))
-g.putdata([int(235 * max(0, 1 - y / 720)) if y < 720 else int(210 * max(0, (y - 1450) / 470)) for y in range(H)])
+g.putdata([int(235 * max(0, 1 - (y - 150) / 600)) if y < 750 else int(210 * max(0, (y - 1350) / 450)) for y in range(H)])
 canvas.alpha_composite(Image.merge("RGBA", (*[Image.new("L", (W, H), 0)] * 3, g.resize((W, H)))))
 
 
@@ -34,25 +34,25 @@ def text(d, xy, s, size, fill, stroke=10):
 
 
 # OLED radar inset with a glowing frame
-ol = Image.open(OLEDF).convert("RGB").resize((560, 280), Image.LANCZOS)
-box = Image.new("RGBA", (600, 320), (20, 70, 165, 255))
-box.paste(ol, (20, 20))
+ol = Image.open(OLEDF).convert("RGB").resize((480, 240), Image.LANCZOS)
+box = Image.new("RGBA", (516, 276), (20, 70, 165, 255))
+box.paste(ol, (18, 18))
 box = box.rotate(-5, expand=True, resample=Image.BICUBIC)
 glow = Image.new("RGBA", box.size)
 glow.putalpha(box.split()[3])
 canvas.alpha_composite(Image.merge("RGBA", (*[Image.new("L", box.size, 255)] * 3, box.split()[3].point(lambda v: min(v, 150))))
-                       .filter(ImageFilter.GaussianBlur(20)), (W - box.width - 30, 1240))
-canvas.alpha_composite(box, (W - box.width - 40, 1230))
+                       .filter(ImageFilter.GaussianBlur(20)), (W - box.width - 30, 1170))
+canvas.alpha_composite(box, (W - box.width - 40, 1160))
 
 d = ImageDraw.Draw(canvas)
-text(d, (W // 2, 140), "KNOB GHUMAO", 124, YEL, 12)
-text(d, (W // 2, 285), "LED Ka Jaadu!", 96, (255, 120, 220), 10)
-canvas.alpha_composite(emoji("🌈", 120, -8), (40, 330))
-d.rounded_rectangle((200, 390, W - 120, 490), 50, fill=(60, 220, 255))
-d.text(((200 + W - 120) // 2, 440), "ESP32 + Rotary Encoder", font=ImageFont.truetype(FONT, 48), fill=INK, anchor="mm")
-d.rounded_rectangle((60, 1600, 640, 1700), 50, fill=(130, 60, 255))
-d.text((350, 1650), "Rainbow LED Flow", font=ImageFont.truetype(FONT, 46), fill=WHT, anchor="mm")
-d.rounded_rectangle((40, 1790, 520, 1870), 40, fill=WHT)
-d.text((280, 1830), "@The IOT Engineer", font=ImageFont.truetype(FONT, 32), fill=INK, anchor="mm")
+text(d, (W // 2, 265), "KNOB GHUMAO", 116, YEL, 12)
+text(d, (W // 2, 400), "LED Ka Jaadu!", 92, (255, 120, 220), 10)
+canvas.alpha_composite(emoji("🌈", 110, -8), (50, 450))
+d.rounded_rectangle((200, 495, W - 120, 590), 48, fill=(60, 220, 255))
+d.text(((200 + W - 120) // 2, 542), "ESP32 + Rotary Encoder", font=ImageFont.truetype(FONT, 48), fill=INK, anchor="mm")
+d.rounded_rectangle((60, 1500, 640, 1600), 50, fill=(130, 60, 255))
+d.text((350, 1550), "Rainbow LED Flow", font=ImageFont.truetype(FONT, 46), fill=WHT, anchor="mm")
+d.rounded_rectangle((60, 1615, 470, 1680), 33, fill=WHT)
+d.text((265, 1648), "@The IOT Engineer", font=ImageFont.truetype(FONT, 28), fill=INK, anchor="mm")
 canvas.convert("RGB").save(OUT, quality=93)
 print("wrote", OUT)
