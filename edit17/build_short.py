@@ -448,10 +448,10 @@ def overlay(fr, f):
                 txt(d, (870, 1250), "BEEP!", 70, YEL, stroke=7)
         else:
             s = pop_s(f - OFF2, 6)
-            txt(d, (W / 2, 250), "AREA CLEAR", 130 * s, GRN, stroke=12)
+            txt(d, (W / 2 - 45, 250), "AREA CLEAR", 112 * s, GRN, stroke=11)
             if s > 0.9:
-                tw = d.textlength("AREA CLEAR", font=font(MONT, 130))
-                lay.alpha_composite(e5.emoji("✅", 90), (int(W / 2 + tw / 2 + 6), 205))
+                tw = d.textlength("AREA CLEAR", font=font(MONT, 112))
+                lay.alpha_composite(e5.emoji("✅", 84), (int(W / 2 - 45 + tw / 2 + 8), 210))
             tag(lay, d, GLED, (800, 1000), "Green LED", "Sab safe", ease((f - OFF2 - 4) / 10))
         hud(lay, d, f)
     else:
