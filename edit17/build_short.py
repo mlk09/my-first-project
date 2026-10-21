@@ -373,7 +373,7 @@ TAGS = {   # shot-1 anchors on the top-down wide (measured on the render)
     "knob": ((370, 1300), (250, 1560), "Knob", "Range set"),
     "leds": ((640, 1280), (820, 1560), "LED + Buzzer", "ALERT / CLEAR"),
 }
-GLED = (640, 1280)                    # green LED in the away shot (measured on the render)
+GLED = (590, 1320)                    # green LED in the away shot (measured on the render)
 
 
 def overlay(fr, f):
