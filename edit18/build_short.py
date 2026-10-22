@@ -426,8 +426,8 @@ def confetti(lay, f):
 
 TAGS = {   # shot-1 anchors on the top-down wide (measured on the render)
     "esp": ((320, 860), (220, 660), "ESP32", "PWM dimaag"),
-    "oled": ((650, 860), (880, 720), "OLED", "R G B values"),
-    "led": ((590, 470), (850, 450), "RGB LED", "KY-016 + ball"),
+    "oled": ((650, 860), (880, 780), "OLED", "R G B values"),
+    "led": ((594, 470), (850, 560), "RGB LED", "KY-016 + ball"),
     "knob": ((370, 1300), (250, 1560), "Knob", "Color / Brightness"),
 }
 
