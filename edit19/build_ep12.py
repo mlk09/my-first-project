@@ -422,8 +422,8 @@ def draw_steps(st, t):
     caption(st, t, S_A_T + 0.75, [("0 se shuru", YEL), (", 5 tak nahi", WHITE)], 540, 610, 48)
     hop_line(st, t, S_A_T + 0.6, 800, 0, 6, HITS_A, 150, 930, LBLUE)
     typed(st, t, S_B_T, "for i in range(0, 10, 2):", 80, 1010, 54, 28, nxt=SAVE_T + 2)
-    caption(st, t, S_B_T + 0.95, [("step = 2", YEL), (" ka jump!", WHITE)], 540, 1100, 48)
-    hop_line(st, t, S_B_T + 0.8, 1290, 0, 10, HITS_B, 110, 970, YEL)
+    caption(st, t, S_B_T + 0.95, [("step = 2", YEL), (" ka jump!", WHITE)], 540, 1090, 48)
+    hop_line(st, t, S_B_T + 0.8, 1245, 0, 10, HITS_B, 110, 970, YEL)
     p11.stamp(st, t, SAVE_T, "SAVE KAR LO!", 380, 1500, 74, YEL, -5)
 
 
