@@ -8,12 +8,12 @@ import os
 import sys
 
 import numpy as np
-from PIL import Image, ImageDraw, ImageFilter, ImageFont
+from PIL import Image, ImageDraw, ImageEnhance, ImageFilter, ImageFont
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 WORK = os.path.join(HERE, "..", "work")
-FRAME = sys.argv[1] if len(sys.argv) > 1 else os.path.join(WORK, "frames3d", "0150.png")
-OLEDF = sys.argv[2] if len(sys.argv) > 2 else os.path.join(WORK, "oled", "0150.png")
+FRAME = sys.argv[1] if len(sys.argv) > 1 else os.path.join(WORK, "frames3d", "0130.png")
+OLEDF = sys.argv[2] if len(sys.argv) > 2 else os.path.join(WORK, "oled", "0130.png")
 FONT = os.path.join(HERE, "..", "..", "edit", "assets", "fonts", "Montserrat-Black.ttf")
 YEL, WHT, INK = (255, 214, 10), (255, 255, 255), (15, 18, 26)
 RGBC = ((255, 60, 60), (40, 230, 110), (60, 140, 255))
@@ -63,7 +63,7 @@ def shade(c, top, bottom):
     c.alpha_composite(Image.merge("RGBA", (*[Image.new("L", (w, h), 0)] * 3, g.resize((w, h)))))
 
 
-src = Image.open(FRAME).convert("RGB")
+src = ImageEnhance.Color(Image.open(FRAME).convert("RGB")).enhance(1.35)
 
 # ---------------------------------------------------------------- 9:16 Shorts cover (mobile + desktop safe)
 W, H = 1080, 1920
