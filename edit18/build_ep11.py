@@ -559,7 +559,7 @@ def option_card(letter, txt, state):
         d.text((74, 71), letter, font=bfont(44), fill=NAVY, anchor="mm")
         d.text((140, 72), txt, font=mb.font(MONO, 50), fill=WHITE, anchor="lm")
         if state:
-            d.text((690, 70), "✔", font=mb.font(bs.CAP, 54), fill=GREEN, anchor="mm")
+            d.line([(668, 72), (686, 92), (718, 50)], fill=GREEN, width=10, joint="curve")
         _C[key] = glow(im, 10, 1.0, col) if state is not False else im
     return _C[key]
 
