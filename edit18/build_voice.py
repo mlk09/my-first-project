@@ -6,7 +6,7 @@ its line fits, with extra anchors so the colour hits land on the words (R / G / 
 'sirf ek LED', 16 MILLION on 'ek crore saath lakh rang', red / green / white on 'Red', 'Green',
 'White', the knob press on 'party mode'). Rendered frames are cross-blended for the slow parts;
 overlays, SFX and music follow the same time map; music + SFX duck under the voice.
-Usage: python3 edit18/build_voice.py <voice.mp3>"""
+Usage: python3 edit18/build_voice.py <voice.mp3> [profile: v1 | monika]"""
 import importlib.util
 import math
 import os
@@ -22,21 +22,38 @@ b = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(b)
 FPS, N, SHOTS, PRESS = b.FPS, b.N, b.SHOTS, b.PRESS
 SR = 48000
-SPEED = 1.1
+SPEED = 1.1                                # voice tempo (pitch kept); per-profile override below
 PAUSE = 0.15
 GAP = 0.3                                  # silence between lines
 EXTRA = {5: 1.6}                           # let PARTY mode play out before the end card
-OUT = os.path.join(HERE, "output", "esp32-oled-rgb-color-mixer-VOICE-SHORT.mp4")
-LINES = [
-    [(0.00, 0.63), (1.26, 2.03), (3.08, 3.38), (4.08, 5.35)],        # sirf ek LED ... aur ... 1 crore 60 lakh rang
-    [(6.05, 8.31), (8.67, 9.24)],                                     # ESP32, OLED, aur ek knob. Bas itna chahiye
-    [(10.23, 10.44), (10.98, 11.66), (12.50, 12.67), (13.23, 13.78), (14.58, 14.88)],   # Red.. Green.. Yellow.. aur teeno.. White
-    [(15.26, 15.95), (16.61, 16.95), (17.36, 18.21)],                 # ab knob ghumao .. har click pe naya rang
-    [(18.62, 20.26), (20.72, 22.65)],                                 # brightness kam-zyada. PWM ka kamaal
-    [(23.10, 23.73), (24.47, 25.20)],                                 # aur knob dabao .. party mode
-    [(25.81, 27.29), (27.78, 28.34), (28.74, 29.39)],                 # code + circuit free. comment RGB
-    [(30.04, 30.84), (31.06, 33.37)],                                 # like share subscribe
-]
+PROFILES = {   # speech chunks (seconds in the voice file) grouped into the 8 script lines
+    "v1": [
+        [(0.00, 0.63), (1.26, 2.03), (3.08, 3.38), (4.08, 5.35)],        # sirf ek LED ... aur ... 1 crore 60 lakh rang
+        [(6.05, 8.31), (8.67, 9.24)],                                     # ESP32, OLED, aur ek knob. Bas itna chahiye
+        [(10.23, 10.44), (10.98, 11.66), (12.50, 12.67), (13.23, 13.78), (14.58, 14.88)],   # Red.. Green.. Yellow.. White
+        [(15.26, 15.95), (16.61, 16.95), (17.36, 18.21)],                 # ab knob ghumao .. har click pe naya rang
+        [(18.62, 20.26), (20.72, 22.65)],                                 # brightness kam-zyada. PWM ka kamaal
+        [(23.10, 23.73), (24.47, 25.20)],                                 # aur knob dabao .. party mode
+        [(25.81, 27.29), (27.78, 28.34), (28.74, 29.39)],                 # code + circuit free. comment RGB
+        [(30.04, 30.84), (31.06, 33.37)],                                 # like share subscribe
+    ],
+    "monika": [
+        [(0.00, 1.05), (1.23, 2.42), (2.84, 5.61)],
+        [(6.07, 7.30), (7.58, 8.50), (8.77, 9.45), (9.78, 10.76)],
+        [(11.19, 11.70), (11.97, 12.74), (13.03, 13.53), (13.80, 14.85), (15.12, 15.65)],
+        [(15.98, 16.92), (17.17, 17.70), (17.89, 19.62)],
+        [(19.91, 21.78), (22.08, 24.25)],
+        [(24.56, 25.39), (25.73, 26.52)],
+        [(26.83, 28.55), (28.84, 30.37)],
+        [(30.67, 34.32)],
+    ],
+}
+PROFILE = sys.argv[2] if len(sys.argv) > 2 else "v1"
+LINES = PROFILES[PROFILE]
+SPEED = {"monika": 1.15}.get(PROFILE, SPEED)
+# (line, chunk) of the words the colour hits land on: hook 16 MILLION, Red, plus Green, White, party mode
+KEYS = {"v1": {"million": (0, 3), "red": (2, 0), "green": (2, 1), "white": (2, 4), "party": (5, 1)},
+        "monika": {"million": (0, 2), "red": (2, 0), "green": (2, 1), "white": (2, 4), "party": (5, 1)}}[PROFILE]
 
 
 def layout():
@@ -62,14 +79,15 @@ def line_start(i):
 
 
 # (source frame, output seconds) anchors, strictly increasing in both
-ANCH = [(0, 0.0), (4, line_start(0) + 0.02), (b.DROP, at(0, 3) + 0.05)]
+ANCH = [(0, 0.0), (4, line_start(0) + 0.02), (b.DROP, at(*KEYS["million"]) + 0.05)]
 for i in range(1, 7):
     ANCH.append((SHOTS[i], line_start(i) - 0.12))
     if i == 2:                                                       # mix: hits on Red / Green / White
-        ANCH += [(SHOTS[2] + 4, at(2, 0) + 0.05), (SHOTS[2] + 22, at(2, 1) + 0.3), (SHOTS[2] + 40, at(2, 4) + 0.02)]
+        ANCH += [(SHOTS[2] + 4, at(*KEYS["red"]) + 0.05), (SHOTS[2] + 22, at(*KEYS["green"]) + 0.3),
+                 (SHOTS[2] + 40, at(*KEYS["white"]) + 0.02)]
     if i == 5:
         ANCH[-1] = (SHOTS[5], line_start(5) - 0.12)
-        ANCH.append((PRESS, at(5, 1) + 0.02))                         # knob press on 'party mode'
+        ANCH.append((PRESS, at(*KEYS["party"]) + 0.02))                         # knob press on 'party mode'
 ANCH.append((N, line_start(7) - 0.15))
 TOTAL_S = max(VEND + 0.4, ANCH[-1][1] + (b.TOTAL - N) / FPS)
 ANCH.append((b.TOTAL, TOTAL_S))
@@ -78,6 +96,8 @@ for (f0, t0), (f1, t1) in zip(ANCH, ANCH[1:]):
 SF = np.array([a for a, _ in ANCH], float)
 ST = np.array([t for _, t in ANCH], float)
 OUT_FRAMES = int(round(TOTAL_S * FPS))
+OUT = os.path.join(HERE, "output", "esp32-oled-rgb-color-mixer-VOICE-SHORT.mp4" if PROFILE == "v1" else
+                   f"esp32-oled-rgb-color-mixer-VOICE-{PROFILE}-SHORT.mp4")
 
 
 def src_of(sec):
@@ -202,6 +222,6 @@ if __name__ == "__main__":
     for (f0, t0) in ANCH:
         print(f"src {f0:4d} -> {t0:6.2f} s")
     print("lines:", [round(line_start(i), 2) for i in range(len(LINES))], "voice end", round(VEND, 2), "total", round(TOTAL_S, 2))
-    if len(sys.argv) > 1:
+    if len(sys.argv) > 1 and sys.argv[1].endswith((".mp3", ".wav")):
         build_audio(sys.argv[1])
         build_video()
