@@ -339,6 +339,26 @@ def sfx_track(total):
 
 # ================================================================== graphics
 BLU = (70, 150, 255)
+RAINBOW = [(255, 40, 40), (255, 120, 20), (255, 210, 20), (80, 240, 60), (30, 230, 190), (40, 120, 255),
+           (130, 60, 255), (255, 60, 170)]             # same palette as the rotary-encoder LED Flow short
+
+
+def glow_col(f):
+    """Edge-glow colour: slow rainbow drift like the LED Flow short, blue while the LED is on."""
+    if led(f) and f < SHOTS[6]:
+        return np.array(BLU, np.float32), 0.18
+    u = (f / 10.0) % len(RAINBOW)
+    i = int(u)
+    a = np.array(RAINBOW[i], np.float32)
+    b_ = np.array(RAINBOW[(i + 1) % len(RAINBOW)], np.float32)
+    return a + (b_ - a) * (u - i), 0.14
+
+
+def rainbow_bar(fr, p):
+    fr[0:10, :] = (fr[0:10, :] * 0.4).astype(np.uint8)
+    n = len(RAINBOW)
+    for j in range(n):
+        fr[0:10, j * W // n: min(p, (j + 1) * W // n)] = RAINBOW[j]
 MODE_EM = {"LAMP": "💡", "BELL": "🔔", "COUNT": "🔢"}
 
 
@@ -523,7 +543,7 @@ def build_video():
             if f - N < 4:
                 k_ = 1 - (f - N) / 4
                 fr = zoom(cv2.GaussianBlur(fr, (0, 0), 1 + 20 * k_), 1 + 0.06 * k_)
-            fr[0:10, :] = YEL
+            rainbow_bar(fr, W)
             enc.stdin.write(np.ascontiguousarray(fr).tobytes())
             continue
         fr = load3d(f)
@@ -538,8 +558,8 @@ def build_video():
         if z > 1.0 or dx:
             fr = zoom(fr, z, dx=dx)
         x = fr.astype(np.float32) * (1 - 0.25 * vig)
-        if led(f) and f < SHOTS[6]:                                # blue edge glow while the LED is on
-            x = x * (1 - 0.12 * vig) + np.array(BLU, np.float32) * 0.12 * vig
+        c, k_ = glow_col(f)                                        # coloured edge glow (LED Flow look)
+        x = x * (1 - k_ * vig) + c * k_ * vig
         if reset_at(f) and f < SHOTS[6]:
             k_ = 0.2 * (1 - (f - HOLD[0] - HOLD[1] + 2) / 24)
             x = x * (1 - k_ * vig) + np.array(RED, np.float32) * k_ * vig
@@ -550,8 +570,7 @@ def build_video():
                 k_ = max(0.0, 1 - abs(dd + 0.5) / 4)
                 fr = zoom(cv2.GaussianBlur(fr, (0, 0), 1 + 22 * k_), 1 + 0.06 * k_)
         p = int(W * (f + 1) / TOTAL)
-        fr[0:10, :] = (fr[0:10, :] * 0.4).astype(np.uint8)
-        fr[0:10, :p] = YEL
+        rainbow_bar(fr, p)
         enc.stdin.write(np.ascontiguousarray(fr).tobytes())
         if f % 48 == 0:
             print(f"  frame {f}/{TOTAL}", flush=True)
