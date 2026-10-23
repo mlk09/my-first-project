@@ -473,11 +473,11 @@ def overlay(fr, f):
         else:
             c = count(f)
             if reset_at(f):
-                pop_text(lay, d, f, HOLD[0] + HOLD[1] - 2, "RESET!", 1150, 140, RED, "🔄")
+                pop_text(lay, d, f, HOLD[0] + HOLD[1] - 2, "RESET!", 1330, 130, RED, "🔄")
             elif c > 0:
                 last = max(s for s, _ in TOUCHES[5:10] if s <= f)
                 s_ = 1 + 0.35 * max(0, 1 - (f - last) / 5)
-                txt(d, (W / 2, 1150), f"COUNT: {c}", 120 * s_, YEL, stroke=11)
+                txt(d, (W / 2, 1330), f"COUNT: {c}", 120 * s_, YEL, stroke=11)
         hud(lay, d, f)
     else:
         g = Image.new("L", (1, H))
