@@ -418,11 +418,11 @@ def pop_text(lay, d, f, f0, s_, y, size, col, em=None):
 
 
 TAGS = {   # shot-1 anchors on the top-down wide (measured on the render)
-    "ttp": ((589, 545), (850, 470), "TTP223", "Touch sensor"),
+    "ttp": ((590, 520), (850, 470), "TTP223", "Touch sensor"),
     "esp": ((320, 860), (220, 660), "ESP32", "Dimaag"),
-    "oled": ((650, 860), (880, 760), "OLED", "Mode + status"),
+    "oled": ((660, 860), (880, 760), "OLED", "Mode + status"),
     "knob": ((370, 1300), (250, 1560), "Knob", "Mode select"),
-    "led": ((640, 1280), (820, 1560), "LED + Buzzer", "Output"),
+    "led": ((630, 1280), (820, 1560), "LED + Buzzer", "Output"),
 }
 
 
@@ -443,11 +443,11 @@ def overlay(fr, f):
         d = ImageDraw.Draw(lay)
     if i == 0:
         s = pop_s(local, 6)
-        txt(d, (W / 2, 250), "Button nahi...", 84 * s, WHT, stroke=8)
-        pop_text(lay, d, f, FIRST, "TOUCH!", 380, 150, CYAN, "⚡")
+        txt(d, (W / 2, 200), "Button nahi...", 80 * s, WHT, stroke=8)
+        pop_text(lay, d, f, FIRST, "TOUCH!", 320, 130, CYAN, "⚡")
         hud(lay, d, f)
     elif i == 1:
-        label(lay, d, "ESP32 Touch Switch", None, local, y=230, em="👆")
+        label(lay, d, "ESP32 Touch Switch", None, local, y=230, em=None)
         for j, key in enumerate(("ttp", "esp", "oled", "knob", "led")):
             a, b, tx, sub = TAGS[key]
             tag(lay, d, a, b, tx, sub, ease((local - 6 - j * 6) / 10))
