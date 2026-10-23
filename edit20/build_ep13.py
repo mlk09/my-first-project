@@ -559,8 +559,8 @@ def scene_at(t):
     return k, SCENES[k]
 
 
-def frame(i):
-    t = i / FPS
+def frame(i, t=None):
+    t = i / FPS if t is None else t
     if t >= END0:
         fr = end_frame(t - END0)
     else:
