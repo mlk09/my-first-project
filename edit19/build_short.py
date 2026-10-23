@@ -466,18 +466,18 @@ def overlay(fr, f):
         if m == "LAMP":
             for s, _ in TOUCHES[2:4]:
                 if s <= f < s + 22:
-                    pop_text(lay, d, f, s, "LED ON!" if led(f) else "LED OFF", 470, 120, BLU if led(f) else WHT)
+                    pop_text(lay, d, f, s, "LED ON!" if led(f) else "LED OFF", 1150, 120, BLU if led(f) else WHT)
         elif m == "BELL":
             if BELL_AT <= f < BELL_AT + 40:
-                pop_text(lay, d, f, BELL_AT, "DING DONG!", 470, 120, YEL, "🔔")
+                pop_text(lay, d, f, BELL_AT, "DING DONG!", 1150, 110, YEL, "🔔")
         else:
             c = count(f)
             if reset_at(f):
-                pop_text(lay, d, f, HOLD[0] + HOLD[1] - 2, "RESET!", 470, 140, RED, "🔄")
+                pop_text(lay, d, f, HOLD[0] + HOLD[1] - 2, "RESET!", 1150, 140, RED, "🔄")
             elif c > 0:
                 last = max(s for s, _ in TOUCHES[5:10] if s <= f)
                 s_ = 1 + 0.35 * max(0, 1 - (f - last) / 5)
-                txt(d, (W / 2, 480), f"COUNT: {c}", 120 * s_, YEL, stroke=11)
+                txt(d, (W / 2, 1150), f"COUNT: {c}", 120 * s_, YEL, stroke=11)
         hud(lay, d, f)
     else:
         g = Image.new("L", (1, H))
