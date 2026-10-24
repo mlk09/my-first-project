@@ -377,11 +377,11 @@ def hud(lay, d, f, y0=1590):
 
 
 TAGS = {   # shot-1 anchors on the top-down wide (measured on the render)
-    "pir": ((350, 430), (790, 470), "PIR Sensor", "HC-SR501"),
+    "pir": ((360, 390), (800, 360), "PIR Sensor", "HC-SR501"),
     "esp": ((320, 860), (220, 660), "ESP32", "Dimaag"),
     "oled": ((650, 860), (880, 720), "OLED", "Status"),
     "knob": ((370, 1300), (250, 1560), "Knob", "ARM / DISARM"),
-    "leds": ((640, 1280), (820, 1560), "LED + Buzzer", "Siren"),
+    "leds": ((620, 1290), (820, 1560), "LED + Buzzer", "Siren"),
 }
 
 
