@@ -18,16 +18,16 @@
 
 | # | Phase 1: Foundation | # | Phase 2: Logic & Loops | # | Phase 3: Data & Functions |
 |---|---|---|---|---|---|
-| 01 | Python kya hai? ✅ | 11 | while loop ✅ | 21 | Sets |
-| 02 | Variables + 3 naming rules ✅ | 12 | for loop + range() ✅ | 22 | Dictionaries |
-| 03 | Data Types cheat sheet ✅ | 13 | break & continue ✅ | 23 | Functions (def) |
-| 04 | input() ✅ | 14 | Strings basics + methods ✅ | 24 | Parameters & return |
-| 05 | Type Casting ✅ | 15 | String slicing ✅ (methods done in EP 14) | 25 | Default arguments |
-| 06 | Operators ✅ | 16 | Lists | 26 | lambda |
-| 07 | f-strings ✅ | 17 | Lists | 27 | try / except |
-| 08 | if-else ✅ | 18 | List methods | 28 | File handling |
-| 09 | elif ✅ | 19 | Tuples | 29 | Modules & pip |
-| 10 | and / or / not ✅ | 20 | Nested loops (pattern) | 30 | Mini project: Number Guessing Game |
+| 01 | Python kya hai? ✅ | 11 | while loop ✅ | 21 | Dictionaries |
+| 02 | Variables + 3 naming rules ✅ | 12 | for loop + range() ✅ | 22 | Functions (def) |
+| 03 | Data Types cheat sheet ✅ | 13 | break, continue, pass ✅ | 23 | Parameters & return |
+| 04 | input() ✅ | 14 | Strings + 5 methods ✅ | 24 | Default arguments |
+| 05 | Type Casting ✅ | 15 | String slicing ✅ | 25 | lambda |
+| 06 | Operators ✅ | 16 | Lists | 26 | try / except |
+| 07 | f-strings ✅ | 17 | List methods | 27 | File handling |
+| 08 | if-else ✅ | 18 | Tuples | 28 | Modules & pip |
+| 09 | elif ✅ | 19 | Nested loops (pattern) | 29 | Mini project: To-Do list |
+| 10 | and / or / not ✅ | 20 | Sets | 30 | Mini project: Number Guessing Game |
 
 **Made so far:** EP 01 → `edit8/output/`, EP 02 → `edit9/output/`, EP 03 → `edit10/output/`, EP 04 → `edit11/output/`, EP 05 → `edit12/output/`, EP 06 → `edit13/output/`, EP 07 → `edit14/output/`, EP 08 → `edit15/output/`, EP 09 → `edit16/output/`, EP 10 → `edit17/output/`, EP 11 → `edit18/output/`, EP 12 → `edit19/output/`, EP 13 → `edit20/output/`, EP 14 → `edit21/output/`, EP 15 → `edit22/output/` (posting kits in each folder).
 
@@ -318,25 +318,25 @@ else:
 
 | # | Topic | Hook line | Analogy |
 |---|---|---|---|
-| 11 | while loop | "Ek line ko 100 baar likhna hai? Ek loop kaafi hai!" | Alarm snooze, jab tak uth na jao |
-| 12 | for + range() ✅ | "1 se 10 tak ginti, sirf 2 lines mein!" | Roll call |
-| 13 | break & continue | "Loop ko beech mein rokna ho toh?" | Lift ka emergency stop |
-| 14 | Strings ✅ | "Python ke liye aapka naam bas characters ki line hai" | Beads ki maala |
-| 15 | Slicing ✅ | "String ko pizza ki tarah kaato!" | Pizza slice |
+| 11 | while loop ✅ | "Ek line ko 100 baar likhna hai? Ek loop kaafi hai!" | Bottle bharna, jab tak full na ho |
+| 12 | for + range() ✅ | "1 se 10 tak ginti, sirf 2 lines mein!" | Chai-poha-vada menu |
+| 13 | break, continue, pass ✅ | "Loop ka remote control!" | Ball track + red wall |
+| 14 | Strings + 5 methods ✅ | "Python ke liye aapka naam bas characters ki line hai" | Beads ki maala |
+| 15 | Slicing ✅ | "String ko pizza ki tarah kaato!" | Pizza slice / knife |
 | 16 | Lists | "100 variables? Nahi! Ek list!" | Shopping list |
-| 17 | Lists | "100 variables? Nahi! Ek list!" | Shopping list |
-| 18 | List methods | "append, remove, sort: list ke superpowers" | Playlist edit karna |
-| 19 | Tuples | "Aisi list jo kabhi badal nahi sakti!" | Aadhaar number |
-| 20 | Nested loops | "Code se star pattern banao ⭐" | Seats ki rows aur columns |
-| 21 | Sets | "Duplicates hatao, ek line mein!" | Unique stamps collection |
-| 22 | Dictionaries | "Python ki apni phonebook!" | Contacts app |
-| 23 | Functions | "Code baar-baar likhna band karo!" | Maggi recipe, ek baar seekho, baar baar banao |
-| 24 | return | "Function se answer wapas kaise lein?" | ATM se paisa |
-| 25 | Default args | "Value na do, phir bhi chalega!" | Chai mein default cheeni |
-| 26 | lambda | "Ek line ka function!" | Sticky note |
-| 27 | try / except | "Program crash hone se bachao!" | Helmet |
-| 28 | File handling | "Python se file likho aur padho" | Diary |
-| 29 | Modules & pip | "Doosron ka code free mein use karo!" | App Store |
+| 17 | List methods | "append, remove, sort: list ke superpowers" | Playlist edit karna |
+| 18 | Tuples | "Aisi list jo kabhi badal nahi sakti!" | Aadhaar number |
+| 19 | Nested loops | "Code se star pattern banao ⭐" | Seats ki rows aur columns |
+| 20 | Sets | "Duplicates hatao, ek line mein!" | Unique stamps collection |
+| 21 | Dictionaries | "Python ki apni phonebook!" | Contacts app |
+| 22 | Functions | "Code baar-baar likhna band karo!" | Maggi recipe, ek baar seekho, baar baar banao |
+| 23 | return | "Function se answer wapas kaise lein?" | ATM se paisa |
+| 24 | Default args | "Value na do, phir bhi chalega!" | Chai mein default cheeni |
+| 25 | lambda | "Ek line ka function!" | Sticky note |
+| 26 | try / except | "Program crash hone se bachao!" | Helmet |
+| 27 | File handling | "Python se file likho aur padho" | Diary |
+| 28 | Modules & pip | "Doosron ka code free mein use karo!" | App Store |
+| 29 | To-Do list app | "List + loop + input = apna app!" | Sticky notes wall |
 | 30 | Number Guessing Game | "Ab tak ka sab kuch mila ke ek game banao 🎮" | Finale |
 
 ---
