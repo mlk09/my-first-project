@@ -385,11 +385,11 @@ def hud(lay, d, f, y0=1590):
 
 
 TAGS = {   # shot-1 anchors on the top-down wide (measured on the render)
-    "arm": ((300, 330), (760, 300), "Robot Arm", "4 x MG90S servo"),
-    "esp": ((320, 860), (220, 660), "ESP32", "Dimaag"),
-    "oled": ((650, 860), (880, 720), "OLED", "Servo angles"),
-    "joy": ((370, 1300), (250, 1560), "Joystick", "X / Y / Button"),
-    "cup": ((560, 470), (840, 520), "Target", "Cube -> Cup"),
+    "arm": ((460, 520), (800, 400), "Robot Arm", "4 x MG90S servo"),
+    "esp": ((420, 1030), (220, 880), "ESP32", "Dimaag"),
+    "oled": ((680, 1040), (860, 1240), "OLED", "Servo angles"),
+    "joy": ((400, 1430), (300, 1720), "Joystick", "X / Y / Button"),
+    "cup": ((735, 760), (880, 600), "Target", "Cube -> Cup"),
 }
 
 
