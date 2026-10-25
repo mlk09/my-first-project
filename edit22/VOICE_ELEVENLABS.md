@@ -7,7 +7,7 @@ Even if the voice comes out longer or shorter, send the mp3 and I'll sync the vi
 ## Paste all of this at once
 
 ```
-String को pizza की तरह काटना है? String slicing सीखो! <break time="0.5s" />
+Hello friends, welcome to Python की पाठशाला! String को pizza की तरह काटना है? आज सीखो string slicing! <break time="0.5s" />
 पहला: index. P Y T H O N... हर letter का एक number. आगे से zero, और पीछे से minus one! <break time="0.8s" />
 दूसरा: slice. s, zero से four. चाकू चला... और मिला P Y T H! Four वाला index शामिल नहीं होता. <break time="0.8s" />
 तीसरा: shortcut. Start खाली, तो शुरू से. Stop खाली, तो end तक! <break time="0.8s" />
@@ -16,7 +16,7 @@ String को pizza की तरह काटना है? String slicing स�
 ये रही पूरी cheat sheet. Screenshot ले लो! <break time="0.6s" />
 अब tricky सवाल! PATHSHALA, one से seven, step two. Output क्या होगा? Comment करो! <break time="3s" />
 सही जवाब: A... A H H! Index one, three, five. <break time="0.5s" />
-Like, share और subscribe करो! अगला episode: Lists!
+Video अच्छा लगा? तो like करो, अपने दोस्तों को share करो, और Python की पाठशाला को subscribe करो! अगला episode: Lists! मिलते हैं कल!
 ```
 
 ## Where each line lands
