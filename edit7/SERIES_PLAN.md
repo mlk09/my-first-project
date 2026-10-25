@@ -22,14 +22,14 @@
 | 02 | Variables + 3 naming rules ✅ | 12 | for loop + range() ✅ | 22 | Dictionaries |
 | 03 | Data Types cheat sheet ✅ | 13 | break & continue ✅ | 23 | Functions (def) |
 | 04 | input() ✅ | 14 | Strings basics + methods ✅ | 24 | Parameters & return |
-| 05 | Type Casting ✅ | 15 | String methods (upper/title/len) | 25 | Default arguments |
-| 06 | Operators ✅ | 16 | String slicing | 26 | lambda |
+| 05 | Type Casting ✅ | 15 | String slicing ✅ (methods done in EP 14) | 25 | Default arguments |
+| 06 | Operators ✅ | 16 | Lists | 26 | lambda |
 | 07 | f-strings ✅ | 17 | Lists | 27 | try / except |
 | 08 | if-else ✅ | 18 | List methods | 28 | File handling |
 | 09 | elif ✅ | 19 | Tuples | 29 | Modules & pip |
 | 10 | and / or / not ✅ | 20 | Nested loops (pattern) | 30 | Mini project: Number Guessing Game |
 
-**Made so far:** EP 01 → `edit8/output/`, EP 02 → `edit9/output/`, EP 03 → `edit10/output/`, EP 04 → `edit11/output/`, EP 05 → `edit12/output/`, EP 06 → `edit13/output/`, EP 07 → `edit14/output/`, EP 08 → `edit15/output/`, EP 09 → `edit16/output/`, EP 10 → `edit17/output/`, EP 11 → `edit18/output/`, EP 12 → `edit19/output/`, EP 13 → `edit20/output/`, EP 14 → `edit21/output/` (posting kits in each folder).
+**Made so far:** EP 01 → `edit8/output/`, EP 02 → `edit9/output/`, EP 03 → `edit10/output/`, EP 04 → `edit11/output/`, EP 05 → `edit12/output/`, EP 06 → `edit13/output/`, EP 07 → `edit14/output/`, EP 08 → `edit15/output/`, EP 09 → `edit16/output/`, EP 10 → `edit17/output/`, EP 11 → `edit18/output/`, EP 12 → `edit19/output/`, EP 13 → `edit20/output/`, EP 14 → `edit21/output/`, EP 15 → `edit22/output/` (posting kits in each folder).
 
 Common hashtags for the whole series: `#python #pythonbasics #pythonforbeginners #coding #programming #learnpython #hinglish #codinginhindi #shorts`
 
@@ -322,8 +322,8 @@ else:
 | 12 | for + range() ✅ | "1 se 10 tak ginti, sirf 2 lines mein!" | Roll call |
 | 13 | break & continue | "Loop ko beech mein rokna ho toh?" | Lift ka emergency stop |
 | 14 | Strings ✅ | "Python ke liye aapka naam bas characters ki line hai" | Beads ki maala |
-| 15 | upper / title / len | "Text ko ek line mein CAPITAL karo!" *(the reference's own trick, in your style)* | Auto-correct |
-| 16 | Slicing | "Naam ka sirf pehla letter kaise nikaalein?" | Pizza slice |
+| 15 | Slicing ✅ | "String ko pizza ki tarah kaato!" | Pizza slice |
+| 16 | Lists | "100 variables? Nahi! Ek list!" | Shopping list |
 | 17 | Lists | "100 variables? Nahi! Ek list!" | Shopping list |
 | 18 | List methods | "append, remove, sort: list ke superpowers" | Playlist edit karna |
 | 19 | Tuples | "Aisi list jo kabhi badal nahi sakti!" | Aadhaar number |
