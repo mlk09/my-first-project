@@ -416,11 +416,13 @@ def panel(lay, f, s=1.0, shake=0.0):
             d.text((x0 + w - 147, y0 + h - 54), "FLAP!", font=font(MONT, 40), fill=INK, anchor="mm")
         for sf in SCORE_AT:                                           # +1 coin pop
             a = f - sf
-            if 0 <= a < 14:
-                yy = y0 + 150 - a * 6
-                al = int(255 * (1 - a / 14))
-                d.ellipse((x0 + 300 - 34, yy - 34, x0 + 300 + 34, yy + 34), fill=(255, 205, 40, al), outline=(150, 90, 0, al), width=5)
-                d.text((x0 + 300, yy), "+1", font=font(MONT, 40), fill=(120, 60, 0, al), anchor="mm")
+            if 0 <= a < 12:                                          # opaque coin that pops, rises and shrinks
+                yy = y0 + 150 - a * 7
+                r = 40 * pop_s(a, 4) * (1 - max(0, a - 8) / 4)
+                if r > 4:
+                    d.ellipse((x0 + 300 - r, yy - r, x0 + 300 + r, yy + r), fill=(255, 205, 40, 255), outline=(150, 90, 0, 255), width=5)
+                    d.ellipse((x0 + 300 - r * 0.72, yy - r * 0.72, x0 + 300 + r * 0.72, yy + r * 0.72), outline=(255, 235, 140, 255), width=3)
+                    d.text((x0 + 300, yy), "+1", font=font(MONT, int(r)), fill=(120, 60, 0, 255), anchor="mm")
 
 
 def confetti(lay, f, f0):
