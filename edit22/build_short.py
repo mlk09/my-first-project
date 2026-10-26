@@ -441,10 +441,10 @@ def confetti(lay, f, f0):
 
 
 TAGS = {   # shot-1 anchors on the top-down wide (measured on the render)
-    "oled": ((650, 860), (880, 640), "OLED", "Game screen"),
-    "esp": ((320, 860), (220, 660), "ESP32", "Game engine"),
-    "knob": ((370, 1300), (250, 1560), "Knob", "Turn = level, Press = FLAP"),
-    "bz": ((760, 1290), (820, 1560), "Buzzer + LEDs", "Sound + score"),
+    "oled": ((660, 860), (840, 560), "OLED", "Game screen"),
+    "esp": ((420, 850), (230, 600), "ESP32", "Game engine"),
+    "knob": ((370, 1300), (300, 1600), "Knob", "Turn = level, Press = FLAP"),
+    "bz": ((740, 1300), (820, 1450), "Buzzer + LEDs", "Sound + score"),
 }
 
 
