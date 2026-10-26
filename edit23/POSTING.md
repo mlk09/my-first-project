@@ -1,3 +1,77 @@
+# EP 16: Python Lists (final: EP 04 design, English fruit names)
+
+**Final video:** `output/Python_ki_Pathshala_EP16_Lists.mp4` (47 s, 1080×1920 HD) → **upload this one**
+**Look (on request):** the **EP 04 input() design**:
+- A dark charcoal grid background on every scene, including the quiz and the end screen.
+- Typewriter title cards (white text + big orange code) and a yellow ribbon.
+- A real code editor + terminal with a Run button, punch-in cuts, and big bottom captions with yellow keywords.
+
+**Pace:** slower (about 42 s of content) so it's easy to follow. The fruits are **apple, banana, mango → grapes, + orange**.
+**Rebuild:** `python3 edit23/build_ep16_v2.py`
+**Voice-over:** `VOICE_ELEVENLABS.md`
+
+| Time | Scene |
+|---|---|
+| 0.0–4.0 | Hook: **100 VARIABLES?** gets struck out, then the big orange **list[ ]**, the ribbon "EK LIST KAAFI HAI!" and the mascot saying "Sab ek jagah!" |
+| 4.0–11.0 | `fruits = [ ]`: "apple" "banana" "mango" fly in, the commas pop, and the pills "[ ] = SQUARE BRACKETS" and ", = ITEMS ALAG KARO" appear |
+| 11.0–20.0 | Editor: `fruits[0]`, `fruits[-1]` → Run → **apple, mango** ✅ |
+| 20.0–28.5 | Editor: `fruits[1] = "grapes"` → Run → **['apple', 'grapes', 'mango']** ✅, "ISE KEHTE HAIN MUTABLE", "INTERVIEW MEIN POOCHTE HAIN!" |
+| 28.5–36.5 | Editor: `fruits.append("orange")`, `print(len(fruits))` → **4** ✅ |
+| 36.5–42.0 | **QUIZ TIME!** `print(fruits[-2])`: the 4 chips with -4…-1 under them, a big **?**, then "COMMENT MEIN BATAO!" |
+| 42.0–47.0 | End screen on the same grid background, then **NEXT: EP 17 LIST METHODS** |
+
+The earlier 30-second neon cut (`Python_ki_Pathshala_EP16_Lists_30s.mp4`, `build_ep16.py`) is kept as an alternative.
+
+---
+
+## Title (pick one; paste without any ⭐)
+
+1. **Python List Kya Hai? 🛍️ 100 Variables Ki Jagah 1 List | Python in Hindi #shorts** (recommended)
+2. **Python Lists Explained 🔥 append, index, mutable | Python ki Pathshala EP 16 #shorts**
+3. **List vs Tuple? Interview Mein Zaroor Poochte Hain 🧠 Python List Hindi #shorts**
+
+## Description (no angle brackets)
+
+```
+Python list kya hai? 🛍️ 100 variables mat banao, ek list banao!
+
+Python ki Pathshala, jahan coding se darr nahi, dosti hoti hai! 🐍
+Is short mein:
+📦 List = square brackets [ ] aur comma se alag items
+0️⃣ Index 0 se shuru, -1 = aakhri item
+🔁 List badal sakti hai (mutable): banana ki jagah grapes
+➕ append() se naya item jodo, len() se ginti
+
+💻 Code from the video:
+fruits = ["apple", "banana", "mango"]
+print(fruits[0])          # apple
+fruits[1] = "grapes"
+fruits.append("orange")
+print(len(fruits))        # 4
+
+🧠 Quiz: print(fruits[-2]) kya dega? Comment karo, sahi answer pin hoga 👇
+
+👉 Previous: EP 15, String slicing
+👉 Next: EP 17, List methods
+🔔 Follow Python ki Pathshala for one new Python concept every day!
+
+#Python #PythonList #PythonInHindi #LearnPython #PythonForBeginners #PythonInterview #CodingForBeginners #PythonKiPathshala
+```
+
+## Tags
+
+```
+python list, python lists, list in python, python list in hindi, python list tutorial, python list append, python list index, list vs tuple python, python interview questions, mutable vs immutable python, python for beginners, python tutorial in hindi, learn python, python basics, coding for beginners, python course in hindi, python ki pathshala, python shorts
+```
+
+## Pinned comment (pin it an hour after posting)
+
+> ✅ Sahi answer: **"mango"**! List thi ["apple", "grapes", "mango", "orange"], aur -2 = peeche se doosra. Kisne sahi bataya? 👇 Next: append, remove, sort aur aur bhi list methods!
+
+---
+
+# Earlier version: 30 s neon cut (kept for reference)
+
 # EP 16: Python Lists in 30 seconds
 
 **Video:** `output/Python_ki_Pathshala_EP16_Lists_30s.mp4` (**30.0 s**, 1080×1920 HD, works without a voice-over)
