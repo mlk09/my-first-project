@@ -66,7 +66,7 @@ p4.EDITOR = {
     },
 }
 p4.CAPTIONS = [
-    (0.3, "LIST KE *4 SUPERPOWERS*"), (2.0, "EK-EK KARKE DEKHO!"),
+    (0.3, "LIST KE *4* *SUPERPOWERS*"), (2.0, "EK-EK KARKE DEKHO!"),
     (4.2, "*METHOD* = LIST KA KAAM"), (5.9, "*DOT* LAGAO, KAAM KARAO"), (7.4, "LIST + *.METHOD()* = JADOO!"),
     (9.2, "*insert()* = BEECH MEIN JODO"), (10.6, "INDEX *1* PE KIWI"), (13.4, "*RUN* KARO"),
     (14.1, "+KIWI BEECH MEIN AA GAYA!+"),
