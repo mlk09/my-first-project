@@ -2,7 +2,7 @@ import random, sys
 from PIL import Image, ImageDraw, ImageFont, ImageFilter, ImageEnhance
 OUT, FONTS, FRAME = sys.argv[1], sys.argv[2], sys.argv[3]
 W, H = 1080, 1920
-BANG = f"{FONTS}/Bangers-Regular.ttf"; CREEP = f"{FONTS}/Creepster-Regular.ttf"
+BANG = f"{FONTS}/Bangers-Regular.ttf"
 
 # --- rain textures: vertically tileable, stacked twice for scrolling ---
 def rain(name, n, lmin, lmax, wid, alpha, slant, blur):
@@ -48,25 +48,30 @@ caps = [
 ]
 for i, c in enumerate(caps): text_img(c, 104, name=f"cap{i+1}")
 
-# --- brand block: yellow banner + red "EVIL ROBOT" + yellow "STORY 2" ---
-def brand(canvas, cx, top, scale=1.0, sub="STORY 2"):
+# --- title block: colourful "THE LAST TRAM", one colour per word ---
+def brand(canvas, cx, top, scale=1.0):
     d = ImageDraw.Draw(canvas)
-    f = ImageFont.truetype(CREEP, int(150*scale))
-    tw = d.textlength("EVIL ROBOT", font=f); bb = d.textbbox((0,0), "EVIL ROBOT", font=f)
-    pad = int(34*scale); bw, bh = tw+2*pad, bb[3]-bb[1]+2*pad
-    banner = Image.new("RGBA", (int(bw), int(bh)), YEL)
-    canvas.alpha_composite(Image.new("RGBA", banner.size, (0,0,0,140)).filter(ImageFilter.GaussianBlur(10)), (int(cx-bw/2)+10, top+12))
-    canvas.alpha_composite(banner, (int(cx-bw/2), top))
-    d = ImageDraw.Draw(canvas)
-    d.text((cx-tw/2, top+pad-bb[1]), "EVIL ROBOT", font=f, fill="#E3101B", stroke_width=max(2,int(3*scale)), stroke_fill="#5A0006")
-    fs = ImageFont.truetype(BANG, int(150*scale))
-    sw = d.textlength(sub, font=fs)
-    d.text((cx-sw/2, top+bh+int(22*scale)), sub, font=fs, fill=YEL, stroke_width=int(10*scale), stroke_fill="black")
-    return top+bh+int(22*scale)+int(170*scale)
+    f = ImageFont.truetype(BANG, int(190*scale)); fs = ImageFont.truetype(BANG, int(120*scale))
+    lines = [([("THE", CYAN), ("LAST", YEL)], fs), ([("TRAM", RED)], f)]
+    y = top
+    for segs, font in lines:
+        space = d.textlength(" ", font=font)
+        ws = [d.textlength(t, font=font) for t, _ in segs]
+        x = cx - (sum(ws) + space*(len(segs)-1))/2
+        sh = Image.new("RGBA", canvas.size); sd = ImageDraw.Draw(sh); xs = x
+        for (t, c), w in zip(segs, ws):
+            sd.text((xs, y+12*scale), t, font=font, fill=(0,0,0,190), stroke_width=int(12*scale), stroke_fill=(0,0,0,190)); xs += w+space
+        canvas.alpha_composite(sh.filter(ImageFilter.GaussianBlur(10*scale)))
+        d = ImageDraw.Draw(canvas)
+        for (t, c), w in zip(segs, ws):
+            d.text((x, y), t, font=font, fill=c, stroke_width=int(12*scale), stroke_fill="black"); x += w+space
+        y += font.size*1.0
+    return int(y)
 
-end = Image.new("RGBA", (W, H)); brand(end, W//2, int(H*0.33))
-d = ImageDraw.Draw(end); f = ImageFont.truetype(BANG, 72); t = "FOLLOW FOR STORY 3"
-d.text(((W-d.textlength(t, font=f))/2, int(H*0.33)+520), t, font=f, fill=CYAN, stroke_width=7, stroke_fill="black")
+end = Image.new("RGBA", (W, H)); y = brand(end, W//2, int(H*0.33))
+d = ImageDraw.Draw(end); f = ImageFont.truetype(BANG, 72); t = "FOLLOW FOR PART 2"
+segs = [("FOLLOW", WHITE), ("FOR", WHITE), ("PART", LIME), ("2", LIME)]
+end.alpha_composite(text_img(segs, 72, stroke=7, y=(y+40)/H))
 end.save(f"{OUT}/endcard.png")
 
 # --- thumbnails ---
@@ -83,5 +88,5 @@ v.alpha_composite(text_img([("HE",WHITE),("WON'T",WHITE),("MISS",YEL),("IT",YEL)
 v.convert("RGB").save(f"{OUT}/thumbnail_shorts_1080x1920.png")
 
 h = grade(src.crop((0, 0, 1120, 630)).resize((1280, 720), Image.LANCZOS)).convert("RGBA")
-hb = Image.new("RGBA", (1280, 720)); brand(hb, 400, 40, scale=0.62)
+hb = Image.new("RGBA", (1280, 720)); brand(hb, 330, 30, scale=0.75)
 h.alpha_composite(hb); h.convert("RGB").save(f"{OUT}/thumbnail_1280x720.png")
