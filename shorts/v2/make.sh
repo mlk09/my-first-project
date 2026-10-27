@@ -43,6 +43,7 @@ ffmpeg -v error -y -i joined.mkv -i boom.wav \
   -loop 1 -framerate 30 -t 1.6 -i $AS/endcard.png \
   $IN \
   -f lavfi -t 15 -i "anoisesrc=color=pink:sample_rate=48000:seed=7" \
+  -loop 1 -framerate 30 -t 1.25 -i $AS/endcta.png \
   -filter_complex "
 [0:v]eq=brightness=0.06:contrast=1.10:saturation=1.22:gamma=1.18,
 colorbalance=bs=0.04:rh=0.06:gh=0.02:bh=-0.03,
@@ -57,7 +58,9 @@ color=c=0xE6EEF5:s=1080x1920:r=30:d=15,format=yuva420p,split[w1][w2];
 $FC
 [4:v]format=rgba,fade=t=in:d=0.4:alpha=1,setpts=PTS-STARTPTS+13.4/TB[ec];
 [$last]drawbox=x=0:y=0:w=iw:h=ih:color=black@0.5:t=fill:enable='gte(t,13.4)'[dim];
-[dim][ec]overlay=0:0:eof_action=pass,fade=t=in:st=0:d=0.4,fade=t=out:st=14.6:d=0.4,format=yuv420p[v];
+[12:v]format=rgba,fade=t=in:d=0.25:alpha=1,setpts=PTS-STARTPTS+13.75/TB[cta];
+[dim][ec]overlay=0:0:eof_action=pass[ec2];
+[ec2][cta]overlay=0:'40*max(0\,1-(t-13.75)/0.25)':eval=frame:eof_action=pass,fade=t=in:st=0:d=0.4,fade=t=out:st=14.8:d=0.2,format=yuv420p[v];
 [11:a]highpass=f=500,lowpass=f=9000,volume=0.16,aformat=channel_layouts=stereo[rain];
 [1:a]asplit[b1][b2];[b1]adelay=6900|6900[h1];[b2]adelay=13400|13400,volume=0.8[h2];
 [0:a]volume=0.9[orig];[orig][rain][h1][h2]amix=inputs=4:duration=first:normalize=0,alimiter=limit=0.9,afade=t=in:d=0.3,afade=t=out:st=14.4:d=0.6[a]" \

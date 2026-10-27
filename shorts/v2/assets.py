@@ -91,3 +91,27 @@ v.convert("RGB").save(f"{OUT}/thumbnail_shorts_1080x1920.png")
 h = grade(src.crop((10, 0, 900, 500)).resize((1280, 720), Image.LANCZOS)).convert("RGBA")
 hb = Image.new("RGBA", (1280, 720)); brand(hb, 640, 20, scale=0.7)
 h.alpha_composite(hb); h.convert("RGB").save(f"{OUT}/thumbnail_1280x720.png")
+
+# --- call to action: like / share / subscribe pills + channel handle ---
+def emoji(ch, size):
+    try:
+        f = ImageFont.truetype("/usr/share/fonts/truetype/noto/NotoColorEmoji.ttf", 109)
+        im = Image.new("RGBA", (150, 150)); ImageDraw.Draw(im).text((10, 10), ch, font=f, embedded_color=True)
+        return im.crop(im.getbbox()).resize((size, size), Image.LANCZOS)
+    except Exception:
+        return None
+cta = Image.new("RGBA", (W, H)); d = ImageDraw.Draw(cta)
+f = ImageFont.truetype(BANG, 64); ph, gap, icon = 112, 22, 56
+pills = [("LIKE", "\U0001F44D", "#1E88FF"), ("SHARE", "\U0001F4E4", "#18B85A"), ("SUBSCRIBE", "\U0001F514", "#FF1E2D")]
+ws = [d.textlength(t, font=f) + icon + 3*20 for t, _, _ in pills]
+x = (W - sum(ws) - gap*(len(ws)-1)) / 2; y = int(H*0.585)
+for (t, e, c), w in zip(pills, ws):
+    sh = Image.new("RGBA", (W, H)); ImageDraw.Draw(sh).rounded_rectangle((x+6, y+10, x+w+6, y+ph+10), ph//2, fill=(0,0,0,160))
+    cta.alpha_composite(sh.filter(ImageFilter.GaussianBlur(8))); d = ImageDraw.Draw(cta)
+    d.rounded_rectangle((x, y, x+w, y+ph), ph//2, fill=c, outline="white", width=5)
+    ic = emoji(e, icon)
+    if ic: cta.alpha_composite(ic, (int(x+20), y+(ph-icon)//2))
+    d.text((x+20+icon+14, y+ph//2), t, font=f, fill="white", anchor="lm", stroke_width=3, stroke_fill="black")
+    x += w + gap
+cta.alpha_composite(text_img([("@BoltsSpookyTales", YEL)], 74, font="/usr/share/fonts/opentype/inter/Inter-Black.otf", stroke=7, y=0.662))
+cta.save(f"{OUT}/endcta.png")
