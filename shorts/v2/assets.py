@@ -82,11 +82,12 @@ src = Image.open(FRAME).convert("RGB")  # 1280x720
 v = grade(src.crop((300, 0, 705, 720)).resize((W, H), Image.LANCZOS)).convert("RGBA")
 rl = Image.open(f"{OUT}/rain_near.png").crop((0,300,W,300+H))
 v.alpha_composite(Image.merge("RGBA", (*[Image.new("L",(W,H),230)]*3, rl.point(lambda p: int(p*0.55)))))
-brand(v, W//2, 110)
-text_img([("HE",WHITE),("WON'T",WHITE),("MISS",YEL),("IT",YEL),("AGAIN",RED)], 112, y=0.80, name=None)
-v.alpha_composite(text_img([("HE",WHITE),("WON'T",WHITE),("MISS",YEL),("IT",YEL),("AGAIN",RED)], 112, y=0.80))
+# keep text inside the 4:5 band (y 285..1635) that feeds and grids crop to
+brand(v, W//2, 310, scale=0.9)
+v.alpha_composite(text_img([("HE",WHITE),("WON'T",WHITE),("MISS",YEL),("IT",YEL),("AGAIN",RED)], 100, y=0.72))
 v.convert("RGB").save(f"{OUT}/thumbnail_shorts_1080x1920.png")
 
-h = grade(src.crop((0, 0, 1120, 630)).resize((1280, 720), Image.LANCZOS)).convert("RGBA")
-hb = Image.new("RGBA", (1280, 720)); brand(hb, 330, 30, scale=0.75)
+# robot and title centred so a 9:16 centre crop (x 437..842) still shows both
+h = grade(src.crop((10, 0, 900, 500)).resize((1280, 720), Image.LANCZOS)).convert("RGBA")
+hb = Image.new("RGBA", (1280, 720)); brand(hb, 640, 20, scale=0.7)
 h.alpha_composite(hb); h.convert("RGB").save(f"{OUT}/thumbnail_1280x720.png")
