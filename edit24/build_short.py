@@ -401,7 +401,8 @@ def panel(lay, f, s=1.0, shake=0.0):
     g = gamegfx.draw_hd(f, PW, PH).convert("RGBA")
     dd = ImageDraw.Draw(g)
     if game(f):
-        txt(dd, (PW - 30, 52), f"SCORE {game(f)['eaten'] * 10:03d}   HI {HIGH_OLD:03d}", 46, WHT, stroke=6, anchor="rm")
+        dd.rounded_rectangle((18, PH - 78, 470, PH - 18), 30, fill=(0, 0, 0, 150))       # score chip, bottom-left
+        txt(dd, (40, PH - 48), f"SCORE {game(f)['eaten'] * 10:03d}   HI {HIGH_OLD:03d}", 42, WHT, stroke=5, anchor="lm")
     w, h = int(PW * s), int(PH * s)
     g = g.resize((w, h), Image.LANCZOS)
     m = Image.new("L", (w, h), 0)
