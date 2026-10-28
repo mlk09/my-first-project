@@ -395,12 +395,12 @@ def hud(lay, d, f, y0=1590):
 
 
 TAGS = {   # shot-1 anchors on the top-down wide (measured on the render)
-    "mq": ((560, 470), (840, 380), "MQ-2", "Gas sensor"),
-    "esp": ((320, 860), (220, 660), "ESP32", "Dimaag"),
-    "oled": ((650, 860), (880, 760), "OLED", "ppm reading"),
+    "mq": ((600, 500), (760, 330), "MQ-2", "Gas sensor"),
+    "esp": ((440, 850), (220, 1090), "ESP32", "Dimaag"),
+    "oled": ((700, 870), (870, 1090), "OLED", "ppm reading"),
     "knob": ((370, 1300), (250, 1560), "Knob", "Limit set"),
-    "fan": ((200, 420), (220, 270), "Exhaust Fan", "Gas bahar"),
-    "leds": ((640, 1280), (820, 1560), "LED + Buzzer", "Alarm"),
+    "fan": ((280, 400), (230, 600), "Exhaust Fan", "Gas bahar"),
+    "leds": ((640, 1290), (820, 1560), "LED + Buzzer", "Alarm"),
 }
 
 
@@ -426,7 +426,7 @@ def overlay(fr, f):
                 lay.alpha_composite(e5.emoji("🚨", 96), (int(W / 2 - 45 + tw / 2 + 8), 275))
         hud(lay, d, f)
     elif i == 1:
-        label(lay, d, "ESP32 Gas Leak Alarm", None, local, y=200, em=None)
+        label(lay, d, "ESP32 Gas Leak Alarm", None, local, y=220, em=None)
         for j, key in enumerate(("mq", "esp", "oled", "fan", "knob", "leds")):
             a, b, tx, sub = TAGS[key]
             tag(lay, d, a, b, tx, sub, ease((local - 6 - j * 5) / 10))
