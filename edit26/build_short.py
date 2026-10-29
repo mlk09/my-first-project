@@ -432,10 +432,10 @@ def confetti(lay, f, f0):
 
 
 TAGS = {   # shot-1 anchors on the top-down wide (measured on the render)
-    "oled": ((660, 860), (840, 560), "OLED", "Pong screen"),
-    "esp": ((420, 850), (230, 600), "ESP32", "Game engine"),
-    "k1": ((300, 1300), (230, 1600), "Knob 1", "TUM ka paddle"),
-    "k2": ((830, 1290), (850, 1600), "Knob 2", "DOST ka paddle"),
+    "oled": ((650, 850), (840, 560), "OLED", "Pong screen"),
+    "esp": ((440, 850), (230, 600), "ESP32", "Game engine"),
+    "k1": ((370, 1300), (300, 1600), "Knob 1", "TUM ka paddle"),
+    "k2": ((870, 1310), (800, 1600), "Knob 2", "DOST ka paddle"),
 }
 
 
@@ -457,7 +457,7 @@ def overlay(fr, f):
             lay.alpha_composite(e5.emoji("🏓", 76), (int(W / 2 - 40 + tw / 2 + 8), 162))
         panel(lay, f, pop_s(local - 4, 8))
     elif i == 1:
-        label(lay, d, "2 Player Pong on ESP32", None, local, y=230, em=None)
+        label(lay, d, "ESP32 Pong Game", None, local, y=230, em=None)
         for j, key in enumerate(("oled", "esp", "k1", "k2")):
             a, b, tx, sub = TAGS[key]
             tag(lay, d, a, b, tx, sub, ease((local - 6 - j * 7) / 10), col=(C1 if key == "k1" else C2 if key == "k2" else CYAN))
