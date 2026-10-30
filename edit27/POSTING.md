@@ -75,3 +75,36 @@ python set, sets in python, python set in hindi, remove duplicates from list pyt
 - Post a day after EP 19, at 7–9 PM IST, and add it to the **Python Basics (Hindi)** playlist.
 - **Searchability:** "remove duplicates from list python" is a very common search, so title 2 targets it.
 - **Rules:** the description has **no angle brackets** (`|` and `&` are fine); there are 8 hashtags, and `#shorts` goes only in the title.
+
+---
+
+## Alternative SEO title + description (structure of a popular 2021 tutorial, wording original)
+
+The pattern that worked: a **question in the title** + **"Explained with Examples"** + a category tag, and a description that lists **the keywords people search** (unordered, unindexed, no duplicates, curly brackets, function names).
+
+**Title:**
+Python Sets Kya Hain? Examples Ke Saath Samjho 🔥 | Python Tutorial in Hindi #shorts
+
+**Description:**
+```
+Python sets kya hote hain aur kab use karte hain? 🔥 Is short mein examples ke saath samjho.
+
+Set ek aisa collection hai jisme duplicate items nahi hote. Set unordered hota hai, isliye isme index nahi chalta, aur ise curly brackets { } se banate hain.
+
+Is video mein seekho:
+✅ set() se list ke duplicates hatana
+✅ add() se naya item jodna
+✅ union ( a | b ): dono sets ke saare items
+✅ intersection ( a & b ): sirf common items
+✅ Set unordered aur unindexed kyun hota hai
+
+💻 Code:
+nums = [1, 2, 2, 3, 3, 3]
+print(set(nums))       # {1, 2, 3}
+
+🧠 Quiz: len({5, 5, 5, 7}) kya hoga? Comment karo 👇
+
+📚 Python ki Pathshala ki poori Python Basics (Hindi) playlist dekho, shuru se end tak, roz ek naya concept.
+
+#Python #PythonSets #PythonInHindi #LearnPython #PythonTutorial #PythonForBeginners #CodingForBeginners #PythonKiPathshala
+```
