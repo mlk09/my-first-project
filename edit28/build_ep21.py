@@ -66,14 +66,14 @@ p4.CAPTIONS = [
     (0.3, "PYTHON KI APNI *PHONEBOOK*!"), (2.0, "ISE KEHTE HAIN *DICTIONARY*"),
     (4.2, "CONTACTS MEIN *NAAM* SE DHOONDHTE HO"), (6.0, "*NAAM* = KEY"), (7.2, "*NUMBER* = VALUE"),
     (8.8, "*KEY* AUR *VALUE* KI JODI!"),
-    (10.7, "*{ }* MEIN KEY: VALUE"), (12.4, "*INDEX* NAHI, *KEY* SE NIKAALO"), (14.8, "*RUN* KARO"),
+    (10.7, "CURLY *BRACKETS* MEIN JODE"), (12.4, "*INDEX* NAHI, *KEY* SE NIKAALO"), (14.8, "*RUN* KARO"),
     (15.4, "+RIYA KE 85!+"), (16.8, "*len()* = KITNE JODE"),
     (19.3, "NAYI KEY = *NAYA* ENTRY"), (20.5, "PURANI KEY = *UPDATE*"), (22.8, "*RUN* KARO"),
     (23.4, "+KABIR JUDA, AMAN 95!+"), (25.0, "*KEY* HAMESHA UNIQUE HOTI HAI"),
     (27.8, "*items()* = KEY + VALUE"), (29.4, "*LOOP* SE SAB PRINT"), (30.6, "*RUN* KARO"),
     (31.5, "+SAB EK SAATH!+"), (33.2, "*JSON* AUR *API* MEIN ROZ KAAM AATA HAI"),
     (36.2, "*YAAD* RAKHO!"), (38.9, "*SCREENSHOT* LE LO!"),
-    (40.7, "*QUIZ* TIME!"), (42.5, "*SAME KEY* DO BAAR?"), (44.3, "*COMMENT* KARO!"),
+    (40.7, "*QUIZ* TIME!"), (42.5, "*SAME* *KEY* DO BAAR?"), (44.3, "*COMMENT* KARO!"),
 ]
 p4.REACT = [(15.4, "85!", GREEN), (23.4, "Update!", GREEN), (31.5, "Wah!", GREEN)]
 p4.END0 = END0
