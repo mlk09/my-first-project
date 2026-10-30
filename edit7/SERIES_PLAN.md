@@ -18,7 +18,7 @@
 
 | # | Phase 1: Foundation | # | Phase 2: Logic & Loops | # | Phase 3: Data & Functions |
 |---|---|---|---|---|---|
-| 01 | Python kya hai? ✅ | 11 | while loop ✅ | 21 | Dictionaries |
+| 01 | Python kya hai? ✅ | 11 | while loop ✅ | 21 | Dictionaries ✅ |
 | 02 | Variables + 3 naming rules ✅ | 12 | for loop + range() ✅ | 22 | Functions (def) |
 | 03 | Data Types cheat sheet ✅ | 13 | break, continue, pass ✅ | 23 | Parameters & return |
 | 04 | input() ✅ | 14 | Strings + 5 methods ✅ | 24 | Default arguments |
@@ -29,7 +29,7 @@
 | 09 | elif ✅ | 19 | Nested loops (pattern) ✅ | 29 | Mini project: To-Do list |
 | 10 | and / or / not ✅ | 20 | Sets ✅ | 30 | Mini project: Number Guessing Game |
 
-**Made so far:** EP 01 → `edit8/output/`, EP 02 → `edit9/output/`, EP 03 → `edit10/output/`, EP 04 → `edit11/output/`, EP 05 → `edit12/output/`, EP 06 → `edit13/output/`, EP 07 → `edit14/output/`, EP 08 → `edit15/output/`, EP 09 → `edit16/output/`, EP 10 → `edit17/output/`, EP 11 → `edit18/output/`, EP 12 → `edit19/output/`, EP 13 → `edit20/output/`, EP 14 → `edit21/output/`, EP 15 → `edit22/output/`, EP 16 → `edit23/output/`, EP 17 → `edit24/output/`, EP 18 → `edit25/output/`, EP 19 → `edit26/output/`, EP 20 → `edit27/output/` (posting kits in each folder).
+**Made so far:** EP 01 → `edit8/output/`, EP 02 → `edit9/output/`, EP 03 → `edit10/output/`, EP 04 → `edit11/output/`, EP 05 → `edit12/output/`, EP 06 → `edit13/output/`, EP 07 → `edit14/output/`, EP 08 → `edit15/output/`, EP 09 → `edit16/output/`, EP 10 → `edit17/output/`, EP 11 → `edit18/output/`, EP 12 → `edit19/output/`, EP 13 → `edit20/output/`, EP 14 → `edit21/output/`, EP 15 → `edit22/output/`, EP 16 → `edit23/output/`, EP 17 → `edit24/output/`, EP 18 → `edit25/output/`, EP 19 → `edit26/output/`, EP 20 → `edit27/output/`, EP 21 → `edit28/output/` (posting kits in each folder).
 
 Common hashtags for the whole series: `#python #pythonbasics #pythonforbeginners #coding #programming #learnpython #hinglish #codinginhindi #shorts`
 
@@ -328,7 +328,7 @@ else:
 | 18 | Tuples ✅ | "Aisi list jo kabhi badal nahi sakti!" | Aadhaar number |
 | 19 | Nested loops ✅ | "Code se star pattern banao ⭐" | Seats ki rows aur columns |
 | 20 | Sets ✅ | "Duplicates hatao, ek line mein!" | Unique stamps collection |
-| 21 | Dictionaries | "Python ki apni phonebook!" | Contacts app |
+| 21 | Dictionaries ✅ | "Python ki apni phonebook!" | Contacts app |
 | 22 | Functions | "Code baar-baar likhna band karo!" | Maggi recipe, ek baar seekho, baar baar banao |
 | 23 | return | "Function se answer wapas kaise lein?" | ATM se paisa |
 | 24 | Default args | "Value na do, phir bhi chalega!" | Chai mein default cheeni |
