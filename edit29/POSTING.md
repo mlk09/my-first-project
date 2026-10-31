@@ -20,7 +20,7 @@
 | 28.0–35.5 | Editor: `def star()` called inside `for i in range(3)` → Run → **\*\*\*\*\* × 3** ✅ |
 | 35.5–40.0 | Recap: def naam(): → BANAO · naam() → CALL KARO · pehle def → PHIR CALL, then **SCREENSHOT LE LO!** |
 | 40.0–45.5 | **QUIZ:** `def hello(): print("Hi")` (never called) + `print("Bye")` → "Hi? Bye? ya DONO?", a big **?**, then "COMMENT MEIN BATAO!" |
-| 45.5–50.5 | End screen on the same grid, then **NEXT: EP 23 PARAMETERS & RETURN** |
+| 45.5–50.5 | End screen on the same grid, then **NEXT: EP 23 RETURN** |
 
 ---
 

@@ -26,7 +26,7 @@ clamp, ease, pop, paste, glow = p4.clamp, p4.ease, p4.pop, p4.paste, p4.glow
 W, H, FPS, SR = p4.W, p4.H, p4.FPS, p4.SR
 CAP, MONO = p4.CAP, p4.MONO
 WHITE, YEL, GREEN, RED, ORANGE, GREY = p4.WHITE, p4.YEL, p4.GREEN, p4.RED, p4.ORANGE, p4.GREY
-es.NEXT = "EP 23: PARAMETERS & RETURN"
+es.NEXT = "EP 23: RETURN"
 
 SCENES = [(0.0, "hook"), (4.0, "recipe"), (10.5, "basic"), (19.5, "error"), (28.0, "loop"), (35.5, "recap"),
           (40.0, "quiz")]
