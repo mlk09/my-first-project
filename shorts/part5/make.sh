@@ -35,12 +35,12 @@ seg g $C2 37.6 2.6 1.00 1.10          # 12.0 eagle finds the red chip
 seg h $C3 32.0 2.6 1.00 1.08          # 14.6 robots wake up
 seg i $C3 37.0 2.0 1.00 1.06          # 17.2 the girl in the doorway
 seg j $C3 39.7 2.4 1.00 1.15 0.5      # 19.2 red eyes close-up, slow
-ffmpeg -v error -y -f lavfi -i color=c=black:s=1080x1920:r=30:d=5.0 -f lavfi -i anullsrc=r=48000:cl=stereo -t 5.0 \
-  -c:v libx264 -preset fast -crf 12 -pix_fmt yuv420p -c:a pcm_s16le bkslot.mkv                # 21.6 book card slot
-seg l $C3 39.9 3.6 1.00 1.06 0.3      # 26.6 red eyes under the end screen
+ffmpeg -v error -y -f lavfi -i color=c=black:s=1080x1920:r=30:d=8.0 -f lavfi -i anullsrc=r=48000:cl=stereo -t 8.0 \
+  -c:v libx264 -preset fast -crf 12 -pix_fmt yuv420p -c:a pcm_s16le bkslot.mkv                # 21.6 book card slot (8 s)
+seg l $C3 39.9 3.6 1.00 1.06 0.3      # 29.6 red eyes under the end screen
 printf "file '%s'\n" a.mkv b.mkv c.mkv d.mkv e.mkv f.mkv g.mkv h.mkv i.mkv j.mkv bkslot.mkv l.mkv > list.txt
 ffmpeg -v error -y -f concat -safe 0 -i list.txt -c:v copy -c:a pcm_s16le joined.mkv
-TOTAL=30.2; BK=21.6; ES=26.6
+TOTAL=33.2; BK=21.6; ES=29.6
 
 T=("0.15 1.95" "2.05 3.95" "4.05 5.5" "5.7 7.7" "7.9 9.9" "10.1 11.9" "12.1 14.5" "14.7 17.1" "17.3 19.1" "19.3 21.5")
 IN=""; FC=""; last="g"

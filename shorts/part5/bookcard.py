@@ -4,7 +4,7 @@ three caption steps across the top. Usage: bookcard.py <endcard_image> <out_dir>
 import sys
 from PIL import Image, ImageDraw, ImageFont, ImageFilter, ImageEnhance
 SRC, OUT, FONTS = sys.argv[1:4]
-W, H, FPS, DUR = 1080, 1920, 30, 5.0
+W, H, FPS, DUR = 1080, 1920, 30, 8.0
 CARD_H, CX, CY = 1220, 450, 950          # card box: x 107..793, y 340..1560 (right buttons start ~x 900)
 card0 = Image.open(SRC).convert("RGB")
 bg = card0.resize((W, H), Image.LANCZOS).filter(ImageFilter.GaussianBlur(45))
@@ -24,8 +24,9 @@ def font(size):
 YEL, WHITE, ORA, PURP, PINK = "#FFD21F", "#FFFFFF", "#FF7A1A", "#B98CFF", "#FF5FA2"
 STEPS = [   # (start, [lines as (text, colour) segments])
     (0.15, [[("Ye book ", WHITE), ("Amazon", YEL), (" par", WHITE)], [("search karein:", WHITE)]]),
-    (1.75, [[("AI for Kids", ORA)], [("with Zuri & Sixby", PURP)]]),
-    (3.35, [[("Ages 6-12", PINK), (" • ", WHITE), ("Kindle eBook", YEL)], [("Link channel bio mein hai!", WHITE)]]),
+    (2.05, [[("AI for Kids", ORA)], [("with Zuri & Sixby", PURP)]]),
+    (3.95, [[("Robots", YEL), (" • ", WHITE), ("Smart Devices", PINK)], [("Machine Learning", ORA), (" — kids ke liye!", WHITE)]]),
+    (5.85, [[("Ages 6-12", PINK), (" • ", WHITE), ("Kindle eBook", YEL)], [("Link channel bio mein hai!", WHITE)]]),
 ]
 def caption(lines, scale):
     lay = Image.new("RGBA", (W, 300)); d = ImageDraw.Draw(lay)
