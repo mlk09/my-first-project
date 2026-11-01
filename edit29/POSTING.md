@@ -1,6 +1,7 @@
 # EP 22: Python Functions (def)
 
 **Video:** `output/Python_ki_Pathshala_EP22_Functions.mp4` (50.5 s, 1080×1920 HD, works without a voice-over)
+**Short cut (24.7 s, on request):** `output/Python_ki_Pathshala_EP22_Functions_Short.mp4`. It drops the loop and recap scenes and plays the recipe, def and error scenes faster (`python3 edit29/build_ep22_short.py`).
 **Thumbnails:** `output/EP22_Functions_thumbnail_1080x1920.jpg` (Short) and `output/EP22_Functions_thumbnail_1280x720.jpg`
 **Format:** the same as EP 16–21 / EP 04:
 - A dark charcoal grid background on every scene, including the quiz and the end screen.

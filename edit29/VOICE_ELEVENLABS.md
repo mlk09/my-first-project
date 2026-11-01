@@ -29,3 +29,18 @@ Video अच्छा लगा? तो like, share, और Python की पा
 | 6 | 0:35.7 | Recap + SCREENSHOT LE LO! |
 | 7 | 0:40.1 | QUIZ: def hello() never called, then print("Bye") |
 | 8 | 0:45.6 | End screen |
+
+---
+
+## SHORT version (for the 24.7 s cut, `Python_ki_Pathshala_EP22_Functions_Short.mp4`)
+
+Speed **1.1–1.15**. The voice comes to about 22 s.
+
+```
+Code बार-बार लिखते हो? Function बनाओ! <break time="0.3s" />
+Maggi की recipe जैसा: एक बार सीखो, बार-बार बनाओ! <break time="0.3s" />
+def से function बनाओ, और नाम के साथ brackets लगाकर call करो. Run... तीन बार Namaste! <break time="0.3s" />
+पर पहले call, बाद में def? Error! पहले def, फिर call. <break time="0.3s" />
+Quiz! Function call ही नहीं किया, तो output क्या होगा? Comment करो! <break time="0.3s" />
+Python की पाठशाला को subscribe करो!
+```

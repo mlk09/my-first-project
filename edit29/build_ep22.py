@@ -188,8 +188,8 @@ def scene_at(t):
 _end = []
 
 
-def frame(i):
-    t = i / FPS
+def frame(i, t=None):
+    t = i / FPS if t is None else t
     if t >= END0:
         if not _end:
             es.static_layer = lambda: Image.new("RGBA", (W, H))
