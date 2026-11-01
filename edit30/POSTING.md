@@ -17,7 +17,7 @@
 | 7.5–13.5 | Editor: `def greet(naam)`, `greet("Aman")`, `greet("Riya")` → Run → **Namaste Aman, Namaste Riya** ✅ |
 | 13.5–19.5 | Editor: `return a + b` (with a glowing box on *return*), `total = add(2, 3)`, `print(total * 10)` → Run → **50** ✅ "print SIRF DIKHATA, return DETA HAI" |
 | 19.5–23.0 | **QUIZ:** `def double(x): x * 2` / `print(double(5))` → "10? ya None?" |
-| 23.0–26.5 | End screen (plexus background), then **NEXT: EP 24 DEFAULT ARGS** |
+| 23.0–26.5 | End screen (plexus background), then **NEXT: EP 24 DEFAULTS** |
 
 ---
 

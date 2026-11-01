@@ -33,7 +33,7 @@ W, H, FPS, SR = p4.W, p4.H, p4.FPS, p4.SR
 CAP, MONO = p4.CAP, p4.MONO
 WHITE, YEL, GREEN, RED, ORANGE, GREY = p4.WHITE, p4.YEL, p4.GREEN, p4.RED, p4.ORANGE, p4.GREY
 CYAN, ICE = (80, 210, 255), (170, 225, 255)
-es.NEXT = "EP 24: DEFAULT ARGS"
+es.NEXT = "EP 24: DEFAULTS"
 
 SCENES = [(0.0, "hook"), (3.0, "machine"), (7.5, "param"), (13.5, "ret"), (19.5, "quiz")]
 END0 = 23.0
