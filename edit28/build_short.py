@@ -117,11 +117,11 @@ def corner_frame(d, box, u, col=CYAN, w=8, L=110):
         d.line((cx, cy, cx, cy + sy * ln), fill=col, width=w)
 
 
-def label(lay, d, text, sub, local, y=1530, em=None, col=WHT):
+def label(lay, d, text, sub, local, y=1530, em=None, col=WHT, size=86):
     s = pop_s(local - 2)
     if s <= 0:
         return
-    txt(d, (W / 2, y), text, 86 * s, col, stroke=8)
+    txt(d, (W / 2, y), text, size * s, col, stroke=8)
     v = ease((local - 9) / 6)
     if v > 0 and sub:
         tw = d.textlength(sub, font=font(BOLD, 46)) + 60
@@ -473,7 +473,7 @@ def overlay(fr, f):
             lay.alpha_composite(e5.emoji("🧱", 80), (int(W / 2 - 40 + tw / 2 + 8), 158))
         panel(lay, f, pop_s(local - 6, 8))
     elif i == 1:
-        label(lay, d, "Brick Breaker on ESP32", None, local, y=230, em=None)
+        label(lay, d, "Brick Breaker on ESP32", None, local, y=230, em=None, size=72)
         for j, key in enumerate(("oled", "esp", "knob", "bz")):
             a, b, tx, sub = TAGS[key]
             tag(lay, d, a, b, tx, sub, ease((local - 6 - j * 7) / 10))
