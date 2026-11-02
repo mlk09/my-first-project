@@ -423,6 +423,33 @@ def clip_card(lay, f, i, local):
     return True
 
 
+PIP0, PIP_LEN, PIP_SRC = 94, 30, 52          # hand-on-knob clip again at the NITRO press (clip frames 54..79)
+
+
+def pip_card(lay, f):
+    """Picture-in-picture of the AI hand clip (whole frame, watermark visible) under the GAME CAM panel."""
+    a = f - PIP0
+    if not (0 <= a < PIP_LEN):
+        return
+    p = os.path.join(GEM, f"{PIP_SRC + a + 1:04d}.png")
+    if not os.path.exists(p):
+        return
+    s = pop_s(a, 5) * (1 - ease((a - PIP_LEN + 5) / 5))
+    if s < 0.05:
+        return
+    w, h = int(580 * s), int(326 * s)
+    c = Image.open(p).convert("RGB").resize((w, h), Image.LANCZOS)
+    cx, cy = 50 + 290, 1110
+    x0, y0 = int(cx - w / 2), int(cy - h / 2)
+    sh = Image.new("RGBA", (w + 50, h + 50))
+    ImageDraw.Draw(sh).rounded_rectangle((25, 33, w + 25, h + 33), 26, fill=(0, 0, 0, 170))
+    lay.alpha_composite(sh.filter(ImageFilter.GaussianBlur(14)), (x0 - 25, y0 - 25))
+    m = Image.new("L", (w, h), 0)
+    ImageDraw.Draw(m).rounded_rectangle((0, 0, w - 1, h - 1), 24, fill=255)
+    lay.paste(c, (x0, y0), m)
+    ImageDraw.Draw(lay).rounded_rectangle((x0, y0, x0 + w - 1, y0 + h - 1), 24, outline=ORANGE + (255,), width=6)
+
+
 def overlay(fr, f):
     i, local = shot_of(f)
     im = Image.fromarray(fr).convert("RGBA")
@@ -445,7 +472,7 @@ def overlay(fr, f):
             d.rounded_rectangle((W / 2 - tw / 2, 245, W / 2 + tw / 2, 312), 34, fill=(0, 0, 0, int(190 * v)))
             d.text((W / 2, 279), "Ghumao aur car chalao", font=font(BOLD, 46), fill=(235, 240, 255, int(255 * v)), anchor="mm")
     elif i == 2:
-        full = SCORE_AT[COIN_COL - 1]
+        full = SCORE_AT[COIN_COL - 1] - 10
         if f < full:
             head(lay, d, "Traffic se bacho!", 200, 84, WHT, "💨", pop_s(local, 5))
         elif f < NITRO_AT:
@@ -481,6 +508,7 @@ def overlay(fr, f):
                 d.text((cx, 955), "Comment \"GAME\" = Code FREE", font=font(MONT, 44), fill=INK, anchor="mm")
     if not (i <= 1 and clip_card(lay, f, i, local)):
         panel(lay, f)
+    pip_card(lay, f)
     im.alpha_composite(lay)
     return np.array(im.convert("RGB"))
 
