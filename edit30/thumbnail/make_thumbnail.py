@@ -12,7 +12,7 @@ from PIL import Image, ImageDraw, ImageEnhance, ImageFilter, ImageFont
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(HERE, ".."))
 import gamegfx  # noqa: E402
-from tunnel import tunnel  # noqa: E402
+from workbench import workbench  # noqa: E402
 
 WORK = os.path.join(HERE, "..", "work")
 FRAME = sys.argv[1] if len(sys.argv) > 1 else os.path.join(WORK, "frames3d", "0150.png")
@@ -56,11 +56,11 @@ def game_card(w, ang=-4):
 
 
 def on_tunnel(im):
-    """The 3D frame is rendered on transparent film; put it on the cinematic digital tunnel."""
+    """The 3D frame is rendered on transparent film; put it on the animated workbench backdrop."""
     if im.mode != "RGBA":
         return im.convert("RGB")
     im = im.resize((1080, 1920), Image.LANCZOS)
-    bg = Image.fromarray(tunnel(250)).convert("RGBA")
+    bg = Image.fromarray(workbench(150)).convert("RGBA")
     bg.alpha_composite(im)
     return bg.convert("RGB")
 

@@ -3,7 +3,7 @@
 no blur transitions): gameplay + hook text from frame 0 ('Ye MOBILE nahi hai!'), the colour GAME CAM panel
 always on screen, hard cuts with a small zoom punch, CLOSE CALL / +50 coin / NITRO / FINISH beats, NEW BEST
 card, and a last shot that ends on the first frame's camera pose so the Short replays seamlessly. All text
-stays inside the Shorts safe zone (top area, never under the title / buttons). Cinematic digital-tunnel
+stays inside the Shorts safe zone (top area, never under the title / buttons). Animated wooden-workbench
 background behind the transparent 3D console render. Chiptune + engine / coin / whoosh / nitro SFX.
 Usage: python3 edit30/build_short.py [audio] [video]
 """
@@ -25,7 +25,7 @@ import build_edit as fx  # noqa: E402
 from timeline import (FPS, N, SHOTS, HIGH_OLD, NITRO_AT, FINISH, DODGE, COINS, PX, CAR_W, COIN_COL,  # noqa: E402
                       game, final_score, ease)
 import gamegfx  # noqa: E402
-from tunnel import tunnel  # noqa: E402
+from workbench import workbench  # noqa: E402
 
 _spec = importlib.util.spec_from_file_location("e5b", os.path.join(ROOT, "edit5", "build_short.py"))
 e5 = importlib.util.module_from_spec(_spec)
@@ -85,12 +85,12 @@ def load3d(f):
 
 
 def with_tunnel(im, f):
-    """Transparent console render (BGRA, shadow-caught) over the animated cinematic digital tunnel."""
+    """Transparent console render (BGRA, shadow-caught) over the animated wooden workbench backdrop."""
     if im.ndim == 2 or im.shape[2] < 4:
         return im
     im = cv2.resize(im, (W, H), interpolation=cv2.INTER_CUBIC)
     a = im[..., 3:4].astype(np.float32) / 255
-    bg = cv2.cvtColor(tunnel(f), cv2.COLOR_RGB2BGR).astype(np.float32) * 0.85
+    bg = cv2.cvtColor(workbench(f), cv2.COLOR_RGB2BGR).astype(np.float32)
     return (im[..., :3].astype(np.float32) * a + bg * (1 - a)).clip(0, 255).astype(np.uint8)
 
 
