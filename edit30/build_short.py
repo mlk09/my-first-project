@@ -398,6 +398,31 @@ def head(lay, d, text, y, size, col, em=None, s=1.0, dx=None):
         lay.alpha_composite(e5.emoji(em, es), (int(cx + tw / 2 + 10), int(y - es * 0.55)))
 
 
+GEM = os.path.join(WORK, "gem")              # frames of the user's Gemini AI clip (hand turning the knob)
+CARD_Y = 400
+
+
+def clip_card(lay, f, i, local):
+    """Shots 0-1: the AI-generated hand-on-knob clip as a full-width card (whole frame kept, watermark visible)."""
+    p = os.path.join(GEM, f"{f + 1:04d}.png")
+    if not os.path.exists(p):
+        return False
+    c = Image.open(p).convert("RGB").resize((1040, 585), Image.LANCZOS)
+    s = 1.0 if i == 0 else pop_s(local + 6, 6)
+    w, h = int(1040 * s), int(585 * s)
+    c = c.resize((w, h), Image.LANCZOS)
+    x0, y0 = (W - w) // 2, CARD_Y + (585 - h) // 2
+    sh = Image.new("RGBA", (w + 60, h + 60))
+    ImageDraw.Draw(sh).rounded_rectangle((30, 40, w + 30, h + 40), 34, fill=(0, 0, 0, 170))
+    lay.alpha_composite(sh.filter(ImageFilter.GaussianBlur(16)), (x0 - 30, y0 - 30))
+    m = Image.new("L", (w, h), 0)
+    ImageDraw.Draw(m).rounded_rectangle((0, 0, w - 1, h - 1), 30, fill=255)
+    lay.paste(c, (x0, y0), m)
+    d = ImageDraw.Draw(lay)
+    d.rounded_rectangle((x0, y0, x0 + w - 1, y0 + h - 1), 30, outline=YEL + (255,), width=8)
+    return True
+
+
 def overlay(fr, f):
     i, local = shot_of(f)
     im = Image.fromarray(fr).convert("RGBA")
@@ -454,7 +479,8 @@ def overlay(fr, f):
             d.rounded_rectangle((cx - bw / 2, 900, cx + bw / 2, 1010), 55, fill=YEL + (255,))
             if v > 0.9:
                 d.text((cx, 955), "Comment \"GAME\" = Code FREE", font=font(MONT, 44), fill=INK, anchor="mm")
-    panel(lay, f)
+    if not (i <= 1 and clip_card(lay, f, i, local)):
+        panel(lay, f)
     im.alpha_composite(lay)
     return np.array(im.convert("RGB"))
 
