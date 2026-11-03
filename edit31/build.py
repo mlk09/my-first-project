@@ -5,6 +5,7 @@ neon gradient map and the two LEDs get red / green colour + glow; everything els
 Like / Share / Subscribe end page is appended. Upscaled to 1080x1920, chiptune + SFX from edit30.
 Usage: python3 edit31/build.py"""
 import importlib.util
+import math
 import os
 import subprocess
 
@@ -102,10 +103,10 @@ BTN_PRESS = (26, 38, 50)
 _BG = None
 
 
-def outro(a, last, title="Game pasand aaya?"):
+def outro(a, last, title="Game pasand aaya?", badge=None, dim=0.38, sub_big=False):
     global _BG
     if _BG is None:
-        bg = cv2.GaussianBlur(last, (0, 0), 28).astype(np.float32) * 0.38
+        bg = cv2.GaussianBlur(last, (0, 0), 14 if sub_big else 28).astype(np.float32) * dim
         _BG = Image.fromarray(bg.astype(np.uint8)).convert("RGBA")
     im = _BG.copy()
     d = ImageDraw.Draw(im)
@@ -122,6 +123,8 @@ def outro(a, last, title="Game pasand aaya?"):
             continue
         pressed = a >= BTN_PRESS[i]
         bump = 1 + 0.08 * max(0, 1 - (a - BTN_PRESS[i]) / 5) if pressed else 1
+        if sub_big and i == 2:                                         # big pulsing SUBSCRIBE
+            bump *= 1.18 + 0.06 * math.sin(a * 0.7)
         w_, h_ = 640 * u * bump, 150 * u * bump
         cy = 640 + i * 210
         fill = pressed_col if pressed else col
@@ -138,6 +141,8 @@ def outro(a, last, title="Game pasand aaya?"):
             d.text((ix + 45, cy), "↗", font=font("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 80), fill=tcol, anchor="mm")
         else:
             ang = 18 * np.sin((a - BTN_PRESS[2]) * 1.3) * max(0, 1 - (a - BTN_PRESS[2]) / 14) if (i == 2 and pressed) else 0
+            if sub_big and i == 2:
+                ang = 22 * np.sin(a * 1.4)                             # bell keeps ringing
             im.alpha_composite(e5.emoji(ic, 86).rotate(ang, expand=False, resample=Image.BICUBIC), (ix, int(cy - 43)))
     if a >= BTN_POP[2] + 4:                                            # finger presses each button in turn
         tgt = [(W / 2 + 200, 640 + i * 210 + 40) for i in range(3)]
@@ -153,7 +158,7 @@ def outro(a, last, title="Game pasand aaya?"):
     v = ease((a - BTN_PRESS[2] - 4) / 6)
     if v > 0:                                                          # stays above the Shorts title / buttons
         txt(d, (W / 2 - 60, 1290), "@The IOT Engineer", 60 * (0.8 + 0.2 * v), YEL, stroke=6)
-    b.badge(im, d)
+    (badge or b.badge)(im, d)
     return np.array(im.convert("RGB"))
 
 

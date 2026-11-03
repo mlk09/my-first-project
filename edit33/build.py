@@ -208,7 +208,7 @@ def build_video():
             fr = frame(f + 1)
             last = fr
         else:
-            fr = b31.outro(f - CLIP, last, "Project pasand aaya?")
+            fr = b31.outro(f - CLIP, last, "Project pasand aaya?", badge=badge, dim=0.55, sub_big=True)
             if f - CLIP < 4:
                 k = 1 - (f - CLIP) / 4
                 fr = b.zoom(cv2.GaussianBlur(fr, (0, 0), 1 + 18 * k), 1 + 0.05 * k)
