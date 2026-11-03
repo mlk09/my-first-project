@@ -102,7 +102,7 @@ BTN_PRESS = (26, 38, 50)
 _BG = None
 
 
-def outro(a, last):
+def outro(a, last, title="Game pasand aaya?"):
     global _BG
     if _BG is None:
         bg = cv2.GaussianBlur(last, (0, 0), 28).astype(np.float32) * 0.38
@@ -110,7 +110,7 @@ def outro(a, last):
     im = _BG.copy()
     d = ImageDraw.Draw(im)
     s = pop_s(a, 6)
-    txt(d, (W / 2, 330), "Game pasand aaya?", 80 * s, WHT, stroke=8)
+    txt(d, (W / 2, 330), title, 80 * s, WHT, stroke=8)
     if s > 0.9:
         im.alpha_composite(e5.emoji("😍", 110), (W // 2 - 55, 400))
     btns = [("LIKE", "👍", (255, 255, 255), (40, 120, 255)),
