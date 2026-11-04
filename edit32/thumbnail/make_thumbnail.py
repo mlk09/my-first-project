@@ -35,7 +35,7 @@ def text(d, xy, s, size, fill, stroke=10, anchor="mm"):
 
 def card(w, ang=-4):
     h = w // 2
-    g = b32.hrgfx.draw_hd(HI_F - HI_F % 8, w, h).convert("RGBA")
+    g = b32.hrgfx.draw_hd(HI_F - HI_F % 8, 1000, 500).resize((w, h), Image.LANCZOS).convert("RGBA")
     m = Image.new("L", (w, h), 0)
     ImageDraw.Draw(m).rounded_rectangle((0, 0, w - 1, h - 1), w // 28, fill=255)
     c = Image.new("RGBA", (w + 40, h + 40))
@@ -56,8 +56,8 @@ c.alpha_composite(Image.merge("RGBA", (*[Image.new("L", (W, H), 0)] * 3, g.resiz
 cd = card(940)
 c.alpha_composite(cd, ((W - cd.width) // 2, 650))
 d = ImageDraw.Draw(c)
-text(d, (W // 2 - 45, 265), "Crush ka message...", 76, YEL, 10)
-c.alpha_composite(emoji("😳", 80, 8), (W // 2 - 45 + int(d.textlength("Crush ka message...", font=F(76)) / 2) + 10, 222))
+text(d, (W // 2 - 45, 265), "Ungli rakho, BPM dekho!", 66, YEL, 9)
+c.alpha_composite(emoji("😱", 72, 8), (W // 2 - 45 + int(d.textlength("Ungli rakho, BPM dekho!", font=F(66)) / 2) + 10, 226))
 d = ImageDraw.Draw(c)
 text(d, (W // 2 - 40, 400), "HEART RATE", 112, RED, 11)
 c.alpha_composite(emoji("❤️", 100, -6), (W // 2 - 40 + int(d.textlength("HEART RATE", font=F(112)) / 2) + 12, 345))
@@ -77,8 +77,8 @@ c.alpha_composite(Image.merge("RGBA", (*[Image.new("L", (W, H), 0)] * 3, sh.resi
 cd = card(560, -5)
 c.alpha_composite(cd, (W - cd.width + 10, 250))
 d = ImageDraw.Draw(c)
-text(d, (40, 90), "Crush ka message...", 64, YEL, 9, anchor="lm")
-c.alpha_composite(emoji("😳", 66, 8), (40 + int(d.textlength("Crush ka message...", font=F(64))) + 12, 56))
+text(d, (40, 90), "Ungli rakho, BPM dekho!", 56, YEL, 8, anchor="lm")
+c.alpha_composite(emoji("😱", 60, 8), (40 + int(d.textlength("Ungli rakho, BPM dekho!", font=F(56))) + 12, 60))
 d = ImageDraw.Draw(c)
 text(d, (40, 205), "HEART RATE", 96, RED, 9, anchor="lm")
 c.alpha_composite(emoji("❤️", 84, -6), (40 + int(d.textlength("HEART RATE", font=F(96))) + 14, 160))
