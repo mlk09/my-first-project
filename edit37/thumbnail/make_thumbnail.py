@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 """Thumbnails for the ESP32 Smart Plant Watering short (edit37): B&W + colour graded frame of the happy green
 plant, the 'PLANT CAM' panel (72 %, KHUSH) as a big card, yellow hook, green title, pills.
-1080x1920 (words inside y 190..1690) + 1280x720."""Thumbnails for the ESP32 Smart Dustbin short (edit37): B&W + colour-screen graded hook frame (hand with the
-paper ball, lid open), the 'BIN CAM' panel (OPEN, 12 cm) as a big card, yellow hook, green title, pills.
 1080x1920 (words inside y 190..1690) + 1280x720."""
 import importlib.util
 import os
@@ -56,7 +54,7 @@ g = Image.new("L", (1, H))
 g.putdata([int(235 * max(0, 1 - (y - 150) / 650)) if y < 800 else int(150 * max(0, (y - 1450) / 450)) for y in range(H)])
 c.alpha_composite(Image.merge("RGBA", (*[Image.new("L", (W, H), 0)] * 3, g.resize((W, H)))))
 cd = card(820)
-c.alpha_composite(cd, (W - cd.width + 10, 1060))
+c.alpha_composite(cd, (W - cd.width + 10, 930))
 d = ImageDraw.Draw(c)
 text(d, (W // 2 - 45, 265), "Khud paani peeta hai!", 72, YEL, 9)
 c.alpha_composite(emoji("😱", 76, 8), (W // 2 - 45 + int(d.textlength("Khud paani peeta hai!", font=F(72)) / 2) + 10, 226))

@@ -102,7 +102,11 @@ def grade(fr, f):
         return rm
     green = ((hh >= 25) & (hh <= 85) & (ss > 60) & (vv > 30)).astype(np.float32) * region(p["plant"]) * wet(f)
     blue = ((hh >= 90) & (hh <= 130) & (ss > 40) & (vv > 50)).astype(np.float32) * np.maximum(region(p["water"]), region(p["tube"]))
-    m = np.maximum(m, np.maximum(green, blue))
+    wreg = np.maximum(region(p["water"]), region(p["tube"]))
+    milky = ((vv > 150) & (ss < 90)).astype(np.float32) * wreg          # bright, washed-out water -> blue water
+    m = np.maximum(m, np.maximum(green, np.maximum(blue, milky)))
+    mk = cv2.GaussianBlur(milky, (0, 0), 2)[..., None]
+    x = x * (1 - mk) + (x * np.array((0.35, 0.7, 1.05), np.float32) + np.array((0, 10, 30), np.float32)) * mk
     m = cv2.GaussianBlur(m, (0, 0), 3)[..., None]
     out = bw * (1 - m) + x * 1.1 * m
     glow = np.zeros((H, W, 3), np.float32)
