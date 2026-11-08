@@ -518,8 +518,6 @@ def build_audio():
 p4.OUT, p4.WORK, p4.TOTAL = OUT, WORK, TOTAL
 p4.frame, p4.build_audio = frame, build_audio
 
-if __name__ == "__main__":
-    p4.main()
 
 
 # ------------------------------------------------------------------ cream theme wiring
@@ -545,3 +543,6 @@ def _type_text(st, t, t0, txt, path, size, col, cx, cy, cps=16, anchor="mm", cur
 
 
 p4.type_text = _type_text
+
+if __name__ == "__main__":
+    p4.main()
