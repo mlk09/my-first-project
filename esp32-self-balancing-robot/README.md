@@ -55,3 +55,36 @@ Fresh batteries matter — weak batteries = it cannot hold itself up.
 
 ## License
 MIT — free to use, share and modify. Please credit **The IOT Engineer** if you post it. 🙏
+
+---
+
+# JARVIS Part 2 — Voice Control 🗣️🤖 (`JarvisVoiceControl/JarvisVoiceControl.ino`)
+
+Same robot and wiring. Your phone turns your voice into text and sends it to the robot over Bluetooth;
+the robot keeps balancing while it drives, turns, spins or dances, and replies "Ji Boss!".
+
+**Needs:** classic ESP32 DevKit (BluetoothSerial does not work on ESP32-S3 / C3). No extra library.
+
+## Setup
+1. Upload `JarvisVoiceControl.ino` (tune Kp / Ki / Kd first with Part 2.1 and copy your values in).
+2. Phone → Bluetooth → pair **JARVIS-Robot** (PIN, if asked: 1234 or 0000).
+3. Install a voice app from the Play Store: search **"Bluetooth voice control Arduino"** (any app that
+   sends the recognised text over Bluetooth). To test without voice: **"Serial Bluetooth Terminal"** and type.
+4. Hold the robot upright → "JARVIS online. Balancing ON!" → speak.
+
+## Commands
+| Say | Robot |
+|---|---|
+| "Jarvis, aage chalo" / forward | drives forward 2 s |
+| "peeche aao" / back | drives back 2 s |
+| "left mudo" / "baaye" | turns left |
+| "right mudo" / "daaye" | turns right |
+| "ghoom jao" / spin | 360° spin |
+| "dance karo" / "naach" | wiggle dance 😎 |
+| "ruk jao" / stop | stops, keeps balancing |
+
+## If something is the wrong way round
+- "aage" makes it go backwards → change `MOVE_LEAN` to `-2.5`.
+- "left" turns right → `INVERT_TURN = true`.
+- Too slow / too fast → `MOVE_LEAN` (1.5 … 4 deg), `TURN_PWM`, `SPIN_PWM`.
+- Falls while driving → smaller `MOVE_LEAN`, or a little more `Kd`.
