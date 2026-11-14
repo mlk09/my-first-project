@@ -26,10 +26,10 @@
 | 06 | Operators ✅ | 16 | Lists (30 s) ✅ | 26 | try / except ✅ |
 | 07 | f-strings ✅ | 17 | List methods ✅ | 27 | File handling ✅ |
 | 08 | if-else ✅ | 18 | Tuples ✅ | 28 | Modules & pip ✅ |
-| 09 | elif ✅ | 19 | Nested loops (pattern) ✅ | 29 | Mini project: To-Do list |
+| 09 | elif ✅ | 19 | Nested loops (pattern) ✅ | 29 | Mini project: To-Do list ✅ |
 | 10 | and / or / not ✅ | 20 | Sets ✅ | 30 | Mini project: Number Guessing Game |
 
-**Made so far:** EP 01 → `edit8/output/`, EP 02 → `edit9/output/`, EP 03 → `edit10/output/`, EP 04 → `edit11/output/`, EP 05 → `edit12/output/`, EP 06 → `edit13/output/`, EP 07 → `edit14/output/`, EP 08 → `edit15/output/`, EP 09 → `edit16/output/`, EP 10 → `edit17/output/`, EP 11 → `edit18/output/`, EP 12 → `edit19/output/`, EP 13 → `edit20/output/`, EP 14 → `edit21/output/`, EP 15 → `edit22/output/`, EP 16 → `edit23/output/`, EP 17 → `edit24/output/`, EP 18 → `edit25/output/`, EP 19 → `edit26/output/`, EP 20 → `edit27/output/`, EP 21 → `edit28/output/`, EP 22 → `edit29/output/`, EP 23 → `edit30/output/`, EP 24 → `edit31/output/`, EP 25 → `edit32/output/`, EP 26 → `edit33/output/`, EP 27 → `edit34/output/`, EP 28 → `edit35/output/` (posting kits in each folder).
+**Made so far:** EP 01 → `edit8/output/`, EP 02 → `edit9/output/`, EP 03 → `edit10/output/`, EP 04 → `edit11/output/`, EP 05 → `edit12/output/`, EP 06 → `edit13/output/`, EP 07 → `edit14/output/`, EP 08 → `edit15/output/`, EP 09 → `edit16/output/`, EP 10 → `edit17/output/`, EP 11 → `edit18/output/`, EP 12 → `edit19/output/`, EP 13 → `edit20/output/`, EP 14 → `edit21/output/`, EP 15 → `edit22/output/`, EP 16 → `edit23/output/`, EP 17 → `edit24/output/`, EP 18 → `edit25/output/`, EP 19 → `edit26/output/`, EP 20 → `edit27/output/`, EP 21 → `edit28/output/`, EP 22 → `edit29/output/`, EP 23 → `edit30/output/`, EP 24 → `edit31/output/`, EP 25 → `edit32/output/`, EP 26 → `edit33/output/`, EP 27 → `edit34/output/`, EP 28 → `edit35/output/`, EP 29 → `edit36/output/` (posting kits in each folder).
 
 Common hashtags for the whole series: `#python #pythonbasics #pythonforbeginners #coding #programming #learnpython #hinglish #codinginhindi #shorts`
 
